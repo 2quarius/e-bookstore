@@ -7,6 +7,7 @@ import SelfCenter from './views/SelfCenter.vue'
 import SelfSetting from './views/user/SelfSetting.vue'
 import DealSetting from './views/user/DealSetting.vue'
 import Cart from './views/Cart.vue'
+import newCart from './views/newCart.vue'
 import Admin from './views/Admin.vue'
 import Deals from './views/Deals.vue'
 import Details from './views/Details.vue'
@@ -55,6 +56,11 @@ export default new Router({
           path: 'cart',
           name: 'cart',
           component: Cart
+        },
+        {
+          path: 'newCart',
+          name: 'newCart',
+          component: newCart
         },
         {
           path: 'deals',

@@ -4,7 +4,7 @@
     :data="tableData"
 		tooltip-effect="dark"
     style="width: 100%"
-		@selection-change="handleSelectionChange">
+		@selection-change="handleSelectionChange()">
     <el-table-column
       type="selection"
       label="全选"
@@ -23,6 +23,7 @@
 			width="120">
     </el-table-column>
 		<el-table-column
+			prop="num"
       label="数量"
 			width="150">
 			<template slot-scope="scope">
@@ -37,7 +38,6 @@
 			width="120">
     </el-table-column>
 		<el-table-column
-      prop="operation"
       label="操作"
 			width="180"
 			show-overflow-tooltip>
@@ -59,8 +59,8 @@ export default {
 				tableData: [{
 					num: 1,
 					description: 'description',
-					price: '10.21',
-					money: '10.21'
+					price: 10.21,
+					money: this.num*this.price
 				},{
 					num: 1,
 					description: 'description',

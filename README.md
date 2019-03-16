@@ -1,4 +1,4 @@
-# vuetest
+# e-bookstores
 
 ## Project setup
 ```

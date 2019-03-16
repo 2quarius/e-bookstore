@@ -10,7 +10,7 @@
 					</el-from-item>
 					<br />
 					<el-form-item label="商品名称">
-						<span>{{ props.row.name }}</span>
+						<span :class="{active:isActive}" @mouseover="changeColor()" @mouseleave="changeColor()">{{ props.row.name }}</span>
 					</el-form-item>
 					<el-form-item label="商品描述">
 						<span>{{ props.row.desc }}</span>
@@ -20,6 +20,9 @@
 					</el-form-item>
 					<el-form-item label="库存量">
 						<span>{{ props.row.storage }}</span>
+					</el-form-item>
+					<el-form-item label="单价">
+						<span>{{ props.row.price }}</span>
 					</el-form-item>
 					<el-form-item label="商品分类">
 						<span>{{ props.row.category }}</span>
@@ -66,11 +69,14 @@
 	name: 'Storage',
 	data() {
 			return {
+				isActive: false,
 				tableData: [{
+					index: 0,
 					name: 'Java语言程序设计',
 					desc: 'Daniel Liang的经典著作，全面整合Java 8的特性，采用“基础优先，问题驱动”的教学方式，循序渐进地介绍了程序设计基础、解决问题的方法、面向对象程序设计、图形用户界面设计、异常处理',
 					ISBN: '9787111506904',
 					storage: '20',
+					price: '¥55',
 					category: '科技',
 					shopId: '10333',
 					address: '上海市普陀区真北路'
@@ -79,6 +85,7 @@
 					desc: 'Daniel Liang的经典著作，全面整合Java 8的特性，采用“基础优先，问题驱动”的教学方式，循序渐进地介绍了程序设计基础、解决问题的方法、面向对象程序设计、图形用户界面设计、异常处理',
 					ISBN: '9787111506904',
 					storage: '20',
+					price: '¥55',
 					category: '科技',
 					shopId: '10333',
 					address: '上海市普陀区真北路'
@@ -87,6 +94,7 @@
 					desc: 'Daniel Liang的经典著作，全面整合Java 8的特性，采用“基础优先，问题驱动”的教学方式，循序渐进地介绍了程序设计基础、解决问题的方法、面向对象程序设计、图形用户界面设计、异常处理',
 					ISBN: '9787111506904',
 					storage: '20',
+					price: '¥55',
 					category: '科技',
 					shopId: '10333',
 					address: '上海市普陀区真北路'
@@ -95,6 +103,7 @@
 					desc: 'Daniel Liang的经典著作，全面整合Java 8的特性，采用“基础优先，问题驱动”的教学方式，循序渐进地介绍了程序设计基础、解决问题的方法、面向对象程序设计、图形用户界面设计、异常处理',
 					ISBN: '9787111506904',
 					storage: '20',
+					price: '¥55',
 					category: '科技',
 					shopId: '10333',
 					address: '上海市普陀区真北路'
@@ -104,6 +113,9 @@
 		methods: {
 			goto: function(dest){
 				this.$router.push(dest);
+			},
+			changeColor:function(){
+				this.isActive = !this.isActive;
 			}
 		},
 		props: {

@@ -1,6 +1,6 @@
 <template>
-  <el-container style="height: 500px; border: 1px solid #eee"> 
-    <el-aside width="200px" style="background-color: rgb(238,241,246)">
+  <el-container style="height: 1000px; border: 1px solid #eee"> 
+    <el-aside width="200px" height="1000px" style="background-color: rgb(238,241,246)">
       <div class="thmbnail">
         <img alt="200x200" src="/static/img/22.png" />
       </div>
@@ -16,7 +16,7 @@
         <el-submenu index="2">
           <template slot="title"><i class="el-icon-goods"></i>购物车</template>
           <el-menu-item-gropup>
-            <el-menu-item index="2-1" @click="goto('/selfcenter/cart')">我的购物车</el-menu-item>
+            <el-menu-item index="2-1" @click="goto('/selfcenter/newCart')">我的购物车</el-menu-item>
           </el-menu-item-gropup>
         </el-submenu>
         <el-submenu index="3">
