@@ -5,8 +5,8 @@
 <el-table-column label="商品名称" width="680"> 
 <template slot-scope="scope"> 
 <div style="margin-left: 50px">
-<img :src="scope.row.goods.img"/>
-<span style="font-size: 18px;padding-left: 200px;">{{scope.row.goods.descript}}</span> 
+<img :src="'/static/img/'+scope.row.url"/>
+<span style="font-size: 18px;padding-left: 200px;">{{scope.row.name}}</span> 
 </div>
 </template> 
 </el-table-column>
@@ -44,44 +44,45 @@ export default {
   name: 'newCart',
   data() {
     return {
-      tableData: [
-{
-  goods:{ 
-  img:'/static/img/good0.jpg', 
-  descript:'Java语言程序设计',
- }, 
-  price:55, 
-  number:1,
- goodTotal:55,
- },
-{ 
-goods:{ 
-  img:'/static/img/good0.jpg', 
-  descript:'Java语言程序设计',
- }, 
-  price:55, 
-  number:1,
- goodTotal:55,
- },
-{ 
-goods:{ 
-  img:'/static/img/good0.jpg', 
-  descript:'Java语言程序设计',
- }, 
-  price:55, 
-  number:1,
- goodTotal:55, 
-},
-{ 
-goods:{ 
-  img:'/static/img/good0.jpg', 
-  descript:'Java语言程序设计',
- }, 
-  price:55, 
-  number:1,
- goodTotal:55,
-}
-],
+//       tableData: [
+// {
+//   goods:{ 
+//   img:'/static/img/good0.jpg', 
+//   descript:'Java语言程序设计',
+//  }, 
+//   price:55, 
+//   number:1,
+//  goodTotal:55,
+//  },
+// { 
+// goods:{ 
+//   img:'/static/img/good0.jpg', 
+//   descript:'Java语言程序设计',
+//  }, 
+//   price:55, 
+//   number:1,
+//  goodTotal:55,
+//  },
+// { 
+// goods:{ 
+//   img:'/static/img/good0.jpg', 
+//   descript:'Java语言程序设计',
+//  }, 
+//   price:55, 
+//   number:1,
+//  goodTotal:55, 
+// },
+// { 
+// goods:{ 
+//   img:'/static/img/good0.jpg', 
+//   descript:'Java语言程序设计',
+//  }, 
+//   price:55, 
+//   number:1,
+//  goodTotal:55,
+// }
+// ],
+tableData: [],
  moneyTotal:0, 
 multipleSelection:[],
  } 
@@ -139,16 +140,28 @@ this.multipleSelection=selection;
 this.moneyTotal+=selection[i].goodTotal;
  }}
 },
-// mounted: function(){
-//     var self = this;
-//     var url = "package.json"
-//     this.axios.get(url).then(function(response){
-//         self.tableData = response.data;
-//         self.tableData = eval("("+self.tableData+")");
-//         alert(response.data);
-//         alert(1);
-//     })
-// }
+mounted: function(){
+    var self = this;
+    var url = "http://localhost:8080/storages/";
+    this.axios.get(url,
+    {
+      headers: {
+        "Access-Control-Allow-Credentials":true,
+        "Access-Control-Allow-Origin":true,
+      }
+    }
+    ).then((response)=>{
+        self.tableData = response.data;
+        for(var i = 0;i < self.tableData.length; i++){
+          self.tableData[i].number = 1;
+          self.tableData[i].goodTotal = self.tableData[i].price;
+          console.log(self.tableData[i].number);
+        }
+    }).catch(error => {
+      JSON.stringify(error);
+        console.log(error);
+    });
+}
 }
 </script>
 

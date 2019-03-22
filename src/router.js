@@ -26,11 +26,7 @@ export default new Router({
     {
       path: '/login',
       name: 'login',
-      component: Login
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      // component: () => import(/* webpackChunkName: "about" */ './views/Login.vue')
+      component: Login  
     },
     {
       path: '/shop',
@@ -40,6 +36,9 @@ export default new Router({
     {
       path: '/selfcenter',
       name: 'self-center',
+      meta: {
+        requireAuth: true,
+      },
       component: SelfCenter,
       children: [
         {
@@ -72,6 +71,9 @@ export default new Router({
     {
       path: '/admin',
       name: 'admin',
+      meta: {
+        requireAuth: true,
+      },
       component: Admin,
       children: [
         {
