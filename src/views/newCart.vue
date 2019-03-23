@@ -44,44 +44,6 @@ export default {
   name: 'newCart',
   data() {
     return {
-//       tableData: [
-// {
-//   goods:{ 
-//   img:'/static/img/good0.jpg', 
-//   descript:'Java语言程序设计',
-//  }, 
-//   price:55, 
-//   number:1,
-//  goodTotal:55,
-//  },
-// { 
-// goods:{ 
-//   img:'/static/img/good0.jpg', 
-//   descript:'Java语言程序设计',
-//  }, 
-//   price:55, 
-//   number:1,
-//  goodTotal:55,
-//  },
-// { 
-// goods:{ 
-//   img:'/static/img/good0.jpg', 
-//   descript:'Java语言程序设计',
-//  }, 
-//   price:55, 
-//   number:1,
-//  goodTotal:55, 
-// },
-// { 
-// goods:{ 
-//   img:'/static/img/good0.jpg', 
-//   descript:'Java语言程序设计',
-//  }, 
-//   price:55, 
-//   number:1,
-//  goodTotal:55,
-// }
-// ],
 tableData: [],
  moneyTotal:0, 
 multipleSelection:[],

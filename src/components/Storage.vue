@@ -4,7 +4,7 @@
 			<template slot-scope="props">
 				<el-form label-position="left" inline class="demo-table-expand">
 					<el-from-item label="封面">
-						<img :src="'/static/img/'+props.row.url" @click="goto('/details')">
+						<img :src="'/static/img/'+props.row.url" @click="selectGood(props.row)">
 					</el-from-item>
 					<br>
 					<el-form-item label="商品名称">
@@ -79,6 +79,13 @@ export default {
 		};
 	},
 	methods: {
+		selectGood:function(argc){
+			this.$router.push({
+				path: '/details',
+				query: {goodId: argc.id}
+			})
+			console.log(argc.id);
+		},
 		goto: function(dest) {
 			this.$router.push(dest);
 		},

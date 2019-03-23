@@ -1,28 +1,74 @@
-.el-row {
-    margin-bottom: 10px;
-    &:last-child{
-      margin-bottom: 0;
-    }
-  }
-  .el-col {
-    border-radius: 4px;
-    margin: 7px
-  }
-  .bg-purple-dark {
-    background: #99a9bf;
-  }
-  .bg-purple {
-    background: #d3dce6;
-  }
-  .bg-purple-light {
-    background: #e5e9f2;
-  }
-  .grid-content {
-    border-radius: 4px;
-    min-height: 0px;
-    text-align: left;
-  }
-  .row-bg {
-    padding: 10px 0;
-    background-color: #f9fafc;
-  }
+.am-container{
+	max-width: 1000px;/*页面总宽度*/
+}
+.my-qcwbj {/*容器边距*/
+		padding-left: 0;
+		padding-right: 0;
+}
+.am-intro-left{
+	float: left;
+	width: 250px;
+	text-align: right
+}
+.am-intro-right{
+	float: right;
+	width: 700px;
+	text-align: left
+}
+.my-syabout .am-intro-default .am-intro-bd .am-intro-right > p{
+	color: #7E7E7E;
+}
+.am-titlebar-default{
+	border-bottom: 0;
+}
+
+.am-titlebar-default .am-titlebar-nav {
+		text-align: center;
+}
+
+.am-titlebar-default .am-titlebar-nav .my-title-l{
+	border: 1px solid #FFB852;
+		border-width: 1px 0px 1px 1px;
+		text-transform: uppercase;
+		color: #FFB852;
+		margin-right: -4px;
+		padding: 0.6rem 1rem;
+		float: left;
+}
+
+.am-titlebar-default .am-titlebar-nav .my-title-r{
+	background-color: #5D5D5D;
+	border: 1px solid #5D5D5D;
+	text-align: center;
+	margin-right: 0;
+	padding: 0.6rem;
+	color: #fff;
+	float: left;
+}
+.my-title-c{
+	background-color: rgb(219, 111, 39);
+	border: 1px solid rgb(219, 111, 39);
+	text-align: left;
+	margin-right: 0;
+	padding: 0.6rem;
+	color: #fff;
+	float: left;
+}
+.content{
+	font-size: 20px;
+	text-align: center;
+}
+.content-desc{
+	font-size: 15px;
+	text-align: left;
+}
+.money{
+	border: 1px;
+	border-width: 1px 1px 1px 1px;
+	font-size: 17px;
+	float: left;
+	text-align: center;
+	color: brown;
+	margin-right: -4px;
+	padding: 0.6rem 1rem;
+}
