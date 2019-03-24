@@ -28,7 +28,7 @@
             </div>
             <div class="form-group">
               <div class="col-sm-offset-2 col-sm-10">
-                 <button type="submit" class="btn btn-default" @click="msg()">Sign in</button>
+                 <button type="submit" class="btn btn-default" @click="msg();check()">Sign in</button>
               </div>
             </div>
           </form>
@@ -48,6 +48,26 @@ export default {
     msg: function() {
       var username = this.$refs.Email.value;
       alert('Email:'+username);
+    },
+    check: function() {
+      var username = this.$refs.Email.value;
+      var password = this.$refs.password.value;
+      // var self = this;
+      var url = "http://localhost:8080/users/"+username;
+      this.axios.get(url,
+      {
+      headers: {
+        "Access-Control-Allow-Credentials":true,
+        "Access-Control-Allow-Origin":true,
+      }
+      }
+      ).then((response)=>{
+        if(response.data.password===password)
+        this.$router.push("/selfcenter")
+      }).catch(error => {
+      JSON.stringify(error);
+        console.log(error);
+      });
     }
   }
 }

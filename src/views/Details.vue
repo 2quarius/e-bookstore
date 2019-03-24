@@ -10,13 +10,13 @@
 							<nav class="am-titlebar-nav">
 								<p class="my-title-l">name</p>
 								<p class="my-title-r">书名</p>
-								<p class="content">{{name}}</p>
+								<p class="content" :data="name">{{name}}</p>
 							</nav>
 							<hr data-am-widget="divider" class="am-divider am-divider-default"/>
 							<nav class="am-titlebar-nav">
 								<p class="my-title-l">ISBN</p>
 								<p class="my-title-r">图书编号</p>
-								<p class="content">{{isbn}}</p>
+								<p class="content" :data="isbn">{{isbn}}</p>
 							</nav>
 							<hr data-am-widget="divider" class="am-divider am-divider-default"/>
 							<nav class="am-titlebar-nav">
@@ -50,27 +50,27 @@ export default {
 		name: 'details',
 		data(){
 			return{
-				id: this.$root.query.goodId,
-				loading: false,
-				url: 'good0.jpg',
-						name: 'Java语言程序设计',
-						isbn: '9787111506904',
-						subject: '科技',
-						descript: 'aniel Liang的经典著作，全面整合Java 8的特性，采用“基础优先，问题驱动”的教学方式，循序渐进地介绍了程序设计基础、解决问题的方法、面向对象程序设计、图形用户界面设计、异常处理',
-						num: 1,
-						price: 55,
-						totalMoney: 55
+				id: this.$route.query.goodId,
+				url: '',
+				name: '',
+				isbn: '',
+				subject: '',
+				descript: '',
+				num: 1,
+				price: '',
+				totalMoney: '',
+				stores: '',
 			}
 		},
-		created(){
+		mounted(){
 			this.fetchData();
 		},
 		methods: {
 			fetchData(){
 				this.loading = true;
 				var self = this;
-				var url = "http://localhost:8080/storages/"+self.$root.query.goodId;
-				console.log(self.$root.query.goodId);
+				var url = "http://localhost:8080/storages/"+self.id;
+				console.log(self.id);
 				this.axios.get(url,
 				{
 					headers: {
@@ -79,14 +79,23 @@ export default {
 					}
 				}
 				).then((response)=>{
-					self.data = response.data
+					self.$data.url = response.data.url;
+					self.$data.name = response.data.name;
+					self.$data.isbn = response.data.isbn;
+					self.$data.subject = response.data.subject;
+					self.$data.descript = response.data.descript;
+					self.$data.price = response.data.price;
+					self.$data.totalMoney = response.data.price;
+					self.$data.stores = response.data.stores;
+					console.log(self.$data);
+					console.log(response.data);
 				}).catch(error => {
 					JSON.stringify(error);
 					console.log(error);
 				});
 			},
 			handleChange:function(){
-				this.totalMoney = this.num*this.price;
+				this.totalMoney = this.num*this.price.toFixed(2);
 			}
 		}
 }
