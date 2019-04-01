@@ -1,5 +1,8 @@
 <template>
-	<el-table :data="tableData" style="width: 100%">
+  <div>
+	<el-input v-model="search" style="width: 300px"
+              placeholder="请输入书名" prefix-icon="el-icon-search"/>
+	<el-table :data="tableData.filter(data=>!search || data.name.includes(search))" stripe style="width: 100%">
 		<el-table-column type="expand">
 			<template slot-scope="props">
 				<el-form label-position="left" inline class="demo-table-expand">
@@ -44,6 +47,7 @@
 		<el-table-column label="ISBN编号" prop="isbn"></el-table-column>
 		<el-table-column label="描述" prop="descript"></el-table-column>
 	</el-table>
+  </div>
 </template>
 
 <style>

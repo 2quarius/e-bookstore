@@ -11,7 +11,7 @@
               <router-link to="/">主页</router-link>
             </li>
             <li>
-              <router-link to='/login'>购物车</router-link>
+              <router-link to='/shop'>书库</router-link>
             </li>
             <li class="dropdown">
                <a href="#" class="dropdown-toggle" data-toggle="dropdown">登录/注册<strong class="caret"></strong></a>
@@ -62,7 +62,7 @@
                 <li class="divider">
                 </li>
                 <li>
-                  <router-link to='/login'>注销</router-link>
+                  <router-link to='/login' @click="logout">注销</router-link>
                 </li>
               </ul>
             </li>
@@ -77,3 +77,15 @@
 <style>
 @import "/lib/css/app.css";
 </style>
+
+<script>
+export default {
+  methods: {
+    logout: function(){
+      if(this.$store.user){
+        this.$store.commit('logout');
+      }
+    }
+  }
+}
+</script>

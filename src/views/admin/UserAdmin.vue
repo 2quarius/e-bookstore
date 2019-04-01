@@ -1,6 +1,6 @@
 <template>
   <el-table
-    :data="tableData.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
+    :data="tableData.filter(data => !search || data.nickname.toLowerCase().includes(search.toLowerCase()))"
     style="width: 100%">
     <el-table-column
       label="ID"
@@ -21,12 +21,16 @@
       <template slot-scope="scope">
         <el-switch
           style="display: block"
+          v-if="scope.row.status!='2'"
           v-model="scope.row.status"
           active-color="#13ce66"
           inactive-color="#ff4949"
           active-text="启用"
-          inactive-text="禁用">
-</el-switch>
+          active-value="1"
+          inactive-text="禁用"
+          inactive-value="0"
+          @change="toggle(scope.row.id,scope.row.status)">
+        </el-switch>
       </template>
     </el-table-column>
   </el-table>
@@ -53,12 +57,30 @@
     }
     ).then((response)=>{
         self.tableData=response.data;
-        console.log(response.data);
-        console.log(self.tableData[0].id);
+        console.log(self.tableData);
       }).catch(error => {
       JSON.stringify(error);
         console.log(error);
     });
-}
+    },
+    methods: {
+      toggle: function(id,stats){
+        console.log(stats);
+        let s = new URLSearchParams;
+        s.append("status",stats);
+        this.axios({
+          method: 'post',
+          url : "http://localhost:8080/users/"+id,
+          data: s
+        }
+        ).then((response)=>{
+            console.log(response.data.id);
+            console.log("success");
+        }).catch(error => {
+            JSON.stringify(error);
+            console.log(error);
+        });
+      }
+    }
   }
 </script>

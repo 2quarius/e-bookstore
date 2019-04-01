@@ -15,7 +15,6 @@ import UserAdmin from './views/admin/UserAdmin.vue'
 import GoodAdmin from './views/admin/GoodAdmin.vue'
 
 Vue.use(Router)
-
 export default new Router({
   routes: [
     {
