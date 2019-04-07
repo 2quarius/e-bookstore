@@ -45,7 +45,7 @@
         search: ''
       }
     },
-    mounted: function(){
+    mounted: function(){//TODO:获取所有用户部分需要修改
     var self = this;
     var url = "http://localhost:8080/users/";
     this.axios.get(url,
@@ -64,7 +64,7 @@
     });
     },
     methods: {
-      toggle: function(id,stats){
+      toggle: function(id,stats){//【TODO】禁用用户部分需要修改
         console.log(stats);
         let s = new URLSearchParams;
         s.append("status",stats);

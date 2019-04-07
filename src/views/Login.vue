@@ -50,7 +50,7 @@ export default {
     signOrRegister: 'ID',
     }
   },
-  methods: {
+  methods: {//登录部分需要修改
     sign: function() {
       this.signOrRegister = 'ID';
       var userid = this.$refs.email.value;

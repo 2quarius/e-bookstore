@@ -33,7 +33,7 @@
                 <li class="divider">
                 </li>
                 <li>
-                  <router-link to='/login'>注销</router-link>
+                  <router-link @click="logout()" to='/login' >注销</router-link>
                 </li>
               </ul>
             </li>
@@ -62,7 +62,7 @@
                 <li class="divider">
                 </li>
                 <li>
-                  <router-link to='/login' @click="logout">注销</router-link>
+                  <router-link @click="logout()" to='/login' >注销</router-link>
                 </li>
               </ul>
             </li>

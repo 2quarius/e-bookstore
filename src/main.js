@@ -20,8 +20,16 @@ Vue.prototype.deleteRequest = deleteRequest;
 Vue.prototype.putRequest = putRequest;
 
 router.beforeEach((to,from,next)=>{
-  if(to.meta.requireAuth){
-    if(store.state.user){
+  if(to.meta.requireAuth&&to.meta.requireMore){
+    if(store.state.user.status==='2'){
+      next();
+    }else{
+      next({
+        path: '/login',
+      });
+    }
+  }else if(to.meta.requireAuth){
+    if(store.state.user&&store.state.user.status==='1'){
       next();
     }else{
       next({

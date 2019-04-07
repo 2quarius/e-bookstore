@@ -72,6 +72,7 @@ export default new Router({
       name: 'admin',
       meta: {
         requireAuth: true,
+        requireMore: true
       },
       component: Admin,
       children: [
