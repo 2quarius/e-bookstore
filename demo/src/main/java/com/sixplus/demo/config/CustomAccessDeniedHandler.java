@@ -15,6 +15,7 @@ import java.nio.charset.StandardCharsets;
 public class CustomAccessDeniedHandler implements AccessDeniedHandler{
     @Override
     public void handle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AccessDeniedException e)throws IOException, ServletException {
+        System.out.println("deny");
         httpServletResponse.setStatus(HttpServletResponse.SC_OK);
         httpServletResponse.setContentType(MediaType.APPLICATION_JSON_VALUE);
         httpServletResponse.setCharacterEncoding(StandardCharsets.UTF_8.toString());

@@ -6,7 +6,7 @@ export default new Vuex.Store({
     state: {
         user: {
             id: window.localStorage.getItem('id'||'[]')==null?'未登录':JSON.parse(window.localStorage.getItem('id'||'[]')).id,
-            nickname: window.localStorage.getItem('nick'||'[]')==null?'':JSON.parse(window.localStorage.getItem('nick'||'[]')).nickname,
+            username: window.localStorage.getItem('nick'||'[]')==null?'':JSON.parse(window.localStorage.getItem('user'||'[]')).username,
         },
     },
     mutations: {
