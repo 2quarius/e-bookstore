@@ -105,6 +105,7 @@ this.moneyTotal+=selection[i].goodTotal;
 mounted: function(){
     var self = this;
     var url = "http://localhost:8080/storages/";
+    console.log("cart init");
     this.axios.get(url,
     {
       headers: {

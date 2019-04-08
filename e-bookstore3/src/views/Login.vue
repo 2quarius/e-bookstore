@@ -8,9 +8,9 @@
         <div class="col-md-6 column">
           <form class="form-horizontal" role="form">
             <div class="form-group">
-               <label for="inputEmail" class="col-sm-2 control-label" v-bind="signOrRegister">{{signOrRegister}}</label>
+               <label for="inputEmail" class="col-sm-2 control-label">Username</label>
               <div class="col-sm-10">
-                <input type="email" class="form-control" id="inputEmail" ref="email"/>
+                <input type="email" class="form-control" id="inputEmail" ref="username"/>
               </div>
             </div>
             <div class="form-group">
@@ -45,37 +45,35 @@
 <script>
 export default {
   name: 'login',
-  data() {
-    return{
-    signOrRegister: 'ID',
-    }
-  },
-  methods: {//登录部分需要修改
+  methods: {//密码需要加密，公钥私钥加密
     sign: function() {
-      this.signOrRegister = 'ID';
-      var userid = this.$refs.email.value;
+      var username = this.$refs.username.value;
       var password = this.$refs.password.value;
-      alert('ID:'+userid);
-      var url = "http://localhost:8080/users/"+userid;
-      this.axios.get(url,
-      {
-        headers: {
-        "Access-Control-Allow-Credentials":true,
-        "Access-Control-Allow-Origin":true,
-        }
+      alert('Username:'+username);
+      this.axios({
+          method: 'post',
+          url : "http://localhost:8080/login",
+          params: {
+            "username": username,
+            "password": password
+          }
       }).then((response)=>{
         console.log(response.data);
-        //send password through internet is not safe, so i should package it with a kind of hash. and use it both in frontend and backend
-        if(response.data.status==="1"&&response.data.password===password){
-          this.$store.commit('login',response.data);
-          this.$router.push("/selfcenter");
-        }
-        else if(response.data.status==='2'){
-          this.$store.commit('login',response.data);
+        if(response.data.result=="管理员登录成功"){
+          var store = {"username":username,"role":"admin"};
+          console.log(store);
+          this.$store.commit('login',store);
           this.$router.push("/admin");
+          console.log("pushed");
         }
-        else if(response.data.status==="0"){
-          alert("your id is disabled");
+        if(response.data.result=="登录成功"){
+          store = {"username":username,"role":"user"};
+          this.$store.commit('login',store);
+          this.$router.push("/selfcenter");
+          console.log("pushed");
+        }
+        else if(response.data.code == '-1'){
+          alert("您的账户已被管理员禁用，请联系管理员");
         }
       }).catch(error => {
       JSON.stringify(error);
@@ -83,21 +81,22 @@ export default {
       });
     },
     register: function() {
-      this.signOrRegister = 'Name';
-      var usrname = this.$refs.email.value;
+      var username = this.$refs.username.value;
       var password = this.$refs.password.value;
-      let s = new URLSearchParams;
-      s.append("nickname",usrname);
-      s.append("password",password);
-      s.append("status",'1');
-      // var url = "http://localhost:8080/users/";
       this.axios({
           method: 'post',
           url : "http://localhost:8080/users/",
-          data: s
+          params: {
+            "username": username,
+            "password": password,
+            "status": "1"
+          }
       }).then((response)=>{
-        alert("your ID is: "+response.data.id+"\nPlease remember it as your qq number because we cannot remind you of that again")
-      })
+        alert(response.data.result);
+      }).catch(error => {
+        JSON.stringify(error);
+        console.log(error);
+      });
     }
   }
 }

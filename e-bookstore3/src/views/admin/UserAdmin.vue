@@ -47,7 +47,7 @@
     },
     mounted: function(){//TODO:获取所有用户部分需要修改
     var self = this;
-    var url = "http://localhost:8080/users/";
+    var url = "http://localhost:8080/get/users/";
     this.axios.get(url,
     {
       headers: {

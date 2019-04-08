@@ -33,7 +33,7 @@
                 <li class="divider">
                 </li>
                 <li>
-                  <router-link @click="logout()" to='/login' >注销</router-link>
+                  <router-link @click="logout" to='/login' >注销</router-link>
                 </li>
               </ul>
             </li>
@@ -62,7 +62,7 @@
                 <li class="divider">
                 </li>
                 <li>
-                  <router-link @click="logout()" to='/login' >注销</router-link>
+                  <router-link to='/login' @click.native="logout">注销</router-link>
                 </li>
               </ul>
             </li>
@@ -82,7 +82,18 @@
 export default {
   methods: {
     logout: function(){
-      if(this.$store.user){
+      console.log('dosth');
+      this.$store.commit('logout');
+      if(this.$store.state.user){
+        this.axios({
+          method: 'get',
+          url: 'http://localhost:8080/logout'
+        }).then((response)=>{
+          alert(response.data.result);
+        }).catch(error => {
+          JSON.stringify(error);
+          console.log(error);
+        });        
         this.$store.commit('logout');
       }
     }

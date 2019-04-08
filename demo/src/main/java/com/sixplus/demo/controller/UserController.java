@@ -1,10 +1,13 @@
 package com.sixplus.demo.controller;
 
+import com.sixplus.demo.bean.WebResponse;
 import com.sixplus.demo.entity.User;
 import com.sixplus.demo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.naming.AuthenticationException;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,14 +50,21 @@ public class UserController {
     }
 
     @PostMapping(value = "/users")//用户申请账号
-    public User addUsers(@RequestParam(value = "password",required = false) String password,
-                               @RequestParam(value = "username",required = false) String username,
+    public WebResponse addUsers(@RequestParam(value = "password",required = false) String password,
+                         @RequestParam(value = "username",required = false) String username,
                          @RequestParam(value = "status",required = false) String status)
     {
-        User user = new User();
-        Integer id = generateId();
-//        Integer id = 0;
-        return getUser(password, username, status,user, id);
+        if(userRepository.findByUsername(username)!=null){
+            WebResponse response = WebResponse.success("用户名已存在");
+            return response;
+        }
+        else {
+            User user = new User();
+            Integer id = generateId();
+            getUser(password, username, status, user, id);
+            WebResponse response = WebResponse.success("注册成功");
+            return response;
+        }
     }
 
     private User getUser(@RequestParam("password") String password, @RequestParam("username") String username,@RequestParam("status") String status, User user, Integer id) {
@@ -66,7 +76,7 @@ public class UserController {
     }
 
     @PutMapping(value = "/users/{id}")//用户登录后才可修改用户名和密码
-    public User updateUsers(@PathVariable(value = "id") Integer id,
+    public WebResponse updateUsers(@PathVariable(value = "id") Integer id,
                             @RequestParam(value = "password",required = false) String password,
                             @RequestParam(value = "username",required = false) String username)
     {
@@ -77,6 +87,8 @@ public class UserController {
             user.setPassword(password);
             user.setUsername(username);
         }
-        return userRepository.save(user);
+        userRepository.save(user);
+        WebResponse response = WebResponse.success("修改成功");
+        return response;
     }
 }

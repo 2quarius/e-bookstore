@@ -37,10 +37,10 @@ public class MyUserDetails extends User implements UserDetails {
                 }
 
                 return authorityList;
-            }
+    }
 
-            @Override
-            public boolean isAccountNonExpired() {
+    @Override
+    public boolean isAccountNonExpired() {
                 return true;
             }
 

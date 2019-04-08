@@ -21,7 +21,7 @@ Vue.prototype.putRequest = putRequest;
 
 router.beforeEach((to,from,next)=>{
   if(to.meta.requireAuth&&to.meta.requireMore){
-    if(store.state.user.status==='2'){
+    if(store.state.user.role == "admin"){
       next();
     }else{
       next({
@@ -29,7 +29,7 @@ router.beforeEach((to,from,next)=>{
       });
     }
   }else if(to.meta.requireAuth){
-    if(store.state.user&&store.state.user.status==='1'){
+    if(store.state.user.role == "user"){
       next();
     }else{
       next({
