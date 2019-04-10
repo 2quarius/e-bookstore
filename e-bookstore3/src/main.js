@@ -18,7 +18,7 @@ Vue.prototype.getRequest = getRequest;
 Vue.prototype.postRequest = postRequest;
 Vue.prototype.deleteRequest = deleteRequest;
 Vue.prototype.putRequest = putRequest;
-
+axios.defaults.withCredentials = true;
 router.beforeEach((to,from,next)=>{
   if(to.meta.requireAuth&&to.meta.requireMore){
     if(store.state.user.role == "admin"){

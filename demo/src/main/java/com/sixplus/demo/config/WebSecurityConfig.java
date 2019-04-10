@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -47,8 +48,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .and()
                 .authorizeRequests()
-                .antMatchers("/user/{id}").hasAuthority("USER")
-                .antMatchers("/add/**","/delete/**","/set/**","/get/**").hasAuthority("ADMIN")
+                .antMatchers("/user/{id}","/deals/**").hasAuthority("USER")
+                .antMatchers("/add/**","/delete/**","/set/**","/get/**","/deals").hasAuthority("ADMIN")
                 .antMatchers("/","/users","/storages","/storages/{id}").permitAll()
                 .and()
                 .logout().logoutUrl("/logout")

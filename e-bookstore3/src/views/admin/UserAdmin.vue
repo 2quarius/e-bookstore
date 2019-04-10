@@ -8,7 +8,7 @@
     </el-table-column>
     <el-table-column
       label="Name"
-      prop="nickname">
+      prop="username">
     </el-table-column>
     <el-table-column
       align="right">
@@ -53,7 +53,7 @@
       headers: {
         "Access-Control-Allow-Credentials":true,
         "Access-Control-Allow-Origin":true,
-      }
+      },
     }
     ).then((response)=>{
         self.tableData=response.data;
@@ -70,8 +70,8 @@
         s.append("status",stats);
         this.axios({
           method: 'post',
-          url : "http://localhost:8080/users/"+id,
-          data: s
+          url : "http://localhost:8080/set/users/"+id,
+          data: s.stringify(),
         }
         ).then((response)=>{
             console.log(response.data.id);

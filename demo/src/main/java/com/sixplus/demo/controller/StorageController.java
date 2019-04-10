@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin(origins = {"*","null"})
+@CrossOrigin(origins = {"http://localhost:8081","null"},allowCredentials = "true")
 @RestController
 public class StorageController {
     @Autowired

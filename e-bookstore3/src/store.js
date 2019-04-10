@@ -18,7 +18,8 @@ export default new Vuex.Store({
         },
         logout(state){
             var num = new Array();
-            window.localStorage.setItem('user',JSON.stringify(num));//不能被清除！！weird
+            state.user = null;
+            window.localStorage.setItem('user',JSON.stringify(num));
             console.log(state.user);
         }
     }

@@ -16,6 +16,7 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
     @Override
     public void commence(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException e) throws IOException, ServletException {
         System.out.println("enterpoint");
+        System.out.println(e.getMessage());
         WebResponse response = new WebResponse();
         response.setCode(String.valueOf(HttpServletResponse.SC_UNAUTHORIZED));
         response.setMessage("authenticate fail");

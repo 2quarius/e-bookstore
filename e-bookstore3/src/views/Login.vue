@@ -56,21 +56,18 @@ export default {
           params: {
             "username": username,
             "password": password
-          }
+          },
       }).then((response)=>{
         console.log(response.data);
         if(response.data.result=="管理员登录成功"){
           var store = {"username":username,"role":"admin"};
-          console.log(store);
           this.$store.commit('login',store);
           this.$router.push("/admin");
-          console.log("pushed");
         }
         if(response.data.result=="登录成功"){
           store = {"username":username,"role":"user"};
           this.$store.commit('login',store);
           this.$router.push("/selfcenter");
-          console.log("pushed");
         }
         else if(response.data.code == '-1'){
           alert("您的账户已被管理员禁用，请联系管理员");
@@ -83,7 +80,14 @@ export default {
     register: function() {
       var username = this.$refs.username.value;
       var password = this.$refs.password.value;
-      this.axios({
+      if(username==null){
+        alert("用户名不能为空");
+      }
+      else if(password==null){
+        alert("密码不能为空");
+      }
+      else{
+        this.axios({
           method: 'post',
           url : "http://localhost:8080/users/",
           params: {
@@ -91,12 +95,13 @@ export default {
             "password": password,
             "status": "1"
           }
-      }).then((response)=>{
-        alert(response.data.result);
-      }).catch(error => {
-        JSON.stringify(error);
-        console.log(error);
-      });
+        }).then((response)=>{
+          alert(response.data.result);
+        }).catch(error => {
+          JSON.stringify(error);
+          console.log(error);
+        });
+      }
     }
   }
 }

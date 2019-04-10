@@ -12,11 +12,11 @@ public class CorsConfig extends WebMvcConfigurerAdapter {
                 .allowedOrigins("http://localhost:8081")
                 .allowedMethods("POST")
                 .allowedHeaders("*")
-                .allowCredentials(false).maxAge(3600);
+                .allowCredentials(true).maxAge(3600);
         registry.addMapping("/logout")
                 .allowedOrigins("http://localhost:8081")
                 .allowedMethods("GET")
                 .allowedHeaders("*")
-                .allowCredentials(false).maxAge(3600);
+                .allowCredentials(true).maxAge(3600);
     }
 }

@@ -11,7 +11,7 @@ import javax.naming.AuthenticationException;
 import java.util.List;
 import java.util.Optional;
 
-@CrossOrigin(origins = {"*","null"})
+@CrossOrigin(origins = {"http://localhost:8081","null"},allowCredentials = "true")
 @RestController
 public class UserController {
     @Autowired
@@ -36,7 +36,9 @@ public class UserController {
     }
 
     @GetMapping(value = "get/users")//管理员获取所有用户的信息表
-    public List<User> getUsers(){return userRepository.findAll();}
+    public List<User> getUsers(){
+
+        return userRepository.findAll();}
 
 
     @PostMapping(value = "set/users/{id}")//管理员禁用/解禁用户
