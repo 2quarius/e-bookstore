@@ -1,15 +1,23 @@
 <template>
 	<div>
 	<el-table
-		:data="tableData.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
+		:data="tableData.filter(data => !search || data.goodname.toLowerCase().includes(search.toLowerCase()))"
 		style="width: 100%">
+		<el-table-column
+			label="ID"
+			prop="id">
+		</el-table-column>
 		<el-table-column
 			label="Date"
 			prop="date">
 		</el-table-column>
 		<el-table-column
 			label="Name"
-			prop="name">
+			prop="goodname">
+		</el-table-column>
+    <el-table-column
+			label="Number"
+			prop="number">
 		</el-table-column>
 		<el-table-column
 			align="right">
@@ -25,7 +33,7 @@
 				<el-rate
 						:disabled="disabled"
 						allow-half=true
-						v-model="scope.row.value"
+						v-model="scope.row.rate"
 						:colors="['#99A9BF', '#F7BA2A', '#FF9900']">
 				</el-rate>
 				</div>
@@ -40,20 +48,12 @@
 </template>
 
 <script>
+import store from '../store';
 	export default {
 		name: 'deals',
 		data() {
 			return {
-				tableData: [{
-					date: '2016-05-02',
-					name: 'Java程序设计',
-					value: false,
-				},{
-					date: '2016-05-02',
-					name: 'Java程序设计',
-					value: false
-				}
-				],
+				tableData: [],
 				search: '',
 				disabled: false,
 				reRate: true
@@ -61,13 +61,45 @@
 		},
 		methods:{
 			submit: function(){
+				var ids = null;
+				var rates = null;
 				for(var i = 0;i<this.tableData.length;i++)
 				{
-					console.log(this.tableData[i].value);
+					if(ids!=null){
+						ids = ids + ',' +this.tableData[i].id;
+					}
+					else {
+						ids = this.tableData[i].id;
+					}
+					if(rates!=null){
+						rates = rates + ',' +this.tableData[i].rate;
+					}
+					else {
+						rates = this.tableData[i].rate;
+					}
 				}
+				this.axios({
+					method: 'post',
+					url: "http://localhost:8080/deals/rate",
+					headers: {
+						"Access-Control-Allow-Credentials": true,
+						"Access-Control-Allow-Origin": true
+					},
+					params:{
+						"idlist":ids,
+						"ratelist":rates
+					} 
+				})
+				.then(response => {
+					console.log(response.data);
+					console.log("get response");
+				})
+				.catch(error => {
+					JSON.stringify(error);
+					console.log(error);
+				});
 				this.disabled = true;
 				this.reRate = false;
-				console.log(this.store.data.username);
 
 			},
 			rechoose: function(){
@@ -78,19 +110,19 @@
 		mounted:function(){
 			var self = this;
 			console.log("mounted");
-			var url = "http://localhost:8080/deals/1";
+			console.log(store.state.user.username);
+			var url = "http://localhost:8080/deals/"+store.state.user.username;
+			console.log(url);
 			this.axios
 			.get(url, {
 				headers: {
 					"Access-Control-Allow-Credentials": true,
 					"Access-Control-Allow-Origin": true
 				},
-				withCredentials: true
 			})
 			.then(response => {
 				self.tableData=response.data;
 				console.log(response.data);
-				console.log("get response");
 			})
 			.catch(error => {
 				JSON.stringify(error);

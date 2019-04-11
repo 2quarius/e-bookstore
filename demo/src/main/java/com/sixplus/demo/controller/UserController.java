@@ -42,13 +42,14 @@ public class UserController {
 
 
     @PostMapping(value = "set/users/{id}")//管理员禁用/解禁用户
-    public User disableUser(@PathVariable(value = "id") Integer id,
+    public WebResponse disableUser(@PathVariable(value = "id") Integer id,
                             @RequestParam(value = "status",required = false) String status)
     {
         Optional<User> users= userRepository.findById(id);
         User user = users.orElse(new User());
         user.setStatus(status);
-        return userRepository.save(user);
+        userRepository.save(user);
+        return WebResponse.success("修改成功");
     }
 
     @PostMapping(value = "/users")//用户申请账号

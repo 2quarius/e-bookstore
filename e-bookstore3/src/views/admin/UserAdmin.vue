@@ -45,7 +45,7 @@
         search: ''
       }
     },
-    mounted: function(){//TODO:获取所有用户部分需要修改
+    mounted: function(){
     var self = this;
     var url = "http://localhost:8080/get/users/";
     this.axios.get(url,
@@ -64,18 +64,19 @@
     });
     },
     methods: {
-      toggle: function(id,stats){//【TODO】禁用用户部分需要修改
-        console.log(stats);
-        let s = new URLSearchParams;
-        s.append("status",stats);
+      toggle: function(id,stats){
         this.axios({
           method: 'post',
           url : "http://localhost:8080/set/users/"+id,
-          data: s.stringify(),
+          params:{"status":stats}
         }
         ).then((response)=>{
-            console.log(response.data.id);
-            console.log("success");
+            if(response.status!=200){
+              alert("something wrong!");
+            }
+            else{
+              console.log("succeed!");
+            }
         }).catch(error => {
             JSON.stringify(error);
             console.log(error);

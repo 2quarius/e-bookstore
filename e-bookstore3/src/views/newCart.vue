@@ -52,28 +52,33 @@ export default {
   },
   methods: {
     submit:function(){
-      var s = null;
-      for(var i = 0;i<this.tableData.length;i++)
-      {
-        if(s!=null){
-          s = s + ',' +this.tableData[i].id;
-          console.log(s);
+      var goodids = null;
+      var numbers = null;
+      for(var i=0;i<this.multipleSelection.length;i++){
+        if(goodids!=null){
+          goodids = goodids + ',' +this.multipleSelection[i].id;
         }
         else {
-          s = this.tableData[i].id;
-          console.log(s);
+          goodids = this.multipleSelection[i].id;
+        }
+        if(numbers!=null){
+          numbers = numbers + ',' +this.multipleSelection[i].number;
+        }
+        else {
+          numbers = this.multipleSelection[i].number;
         }
       }
-      console.log(s);
-      var url = "http://localhost:8080/deals/"+store.state.user.username;
-      this.axios
-			.post(url, {
+      this.axios({
+        method: 'post',
+        url: "http://localhost:8080/deals/"+store.state.user.username,
 				headers: {
 					"Access-Control-Allow-Credentials": true,
 					"Access-Control-Allow-Origin": true
 				},
-        withCredentials: true,
-        data: s
+        params:{
+          "goodid":goodids,
+          "goodnumber":numbers
+        } 
 			})
 			.then(response => {
 				console.log(response.data);

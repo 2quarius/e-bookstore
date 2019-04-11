@@ -23,7 +23,10 @@ public class Deal {
 
     private Integer goodid;
 
-    private float rate;
+    private Double rate;
 
     private OrderStatusEnum statusEnum;
+
+    private Integer number;
+
 }

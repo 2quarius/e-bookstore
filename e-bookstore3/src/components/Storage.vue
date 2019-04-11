@@ -1,7 +1,7 @@
 <template>
-  <div>
+	<div>
 	<el-input v-model="search" style="width: 300px"
-              placeholder="请输入书名" prefix-icon="el-icon-search"/>
+							placeholder="请输入书名" prefix-icon="el-icon-search"/>
 	<el-table :data="tableData.filter(data=>!search || data.name.includes(search))" stripe style="width: 100%">
 		<el-table-column type="expand">
 			<template slot-scope="props">
@@ -11,34 +11,37 @@
 					</el-from-item>
 					<br>
 					<el-form-item label="商品名称">
-						<span
+						<span v-if="!props.row.editClicked"
 							:class="{active:isActive}"
 							@mouseover="changeColor()"
 							@mouseleave="changeColor()"
 						>{{ props.row.name }}</span>
+						<el-input v-if="props.row.editClicked" v-model="props.row.name">{{props.row.name}}</el-input>
 					</el-form-item>
 					<el-form-item label="商品描述">
-						<span>{{ props.row.descript }}</span>
+						<span v-if="!props.row.editClicked">{{ props.row.descript }}</span>
+						<el-input type="textarea" autosize v-if="props.row.editClicked" v-model="props.row.descript">{{props.row.descript}}</el-input>
 					</el-form-item>
 					<el-form-item label="ISBN编号">
-						<span>{{ props.row.isbn }}</span>
+						<span v-if="!props.row.editClicked">{{ props.row.isbn }}</span>
+						<el-input v-if="props.row.editClicked" v-model="props.row.isbn">{{props.row.isbn}}</el-input>
 					</el-form-item>
 					<el-form-item label="库存量">
-						<span>{{ props.row.stores }}</span>
+						<span v-if="!props.row.editClicked">{{ props.row.stores }}</span>
+						<el-input v-if="props.row.editClicked" v-model="props.row.stores">{{props.row.stores}}</el-input>
 					</el-form-item>
 					<el-form-item label="单价">
-						<span>{{ props.row.price }}</span>
+						<span v-if="!props.row.editClicked">{{ props.row.price }}</span>
+						<el-input v-if="props.row.editClicked" v-model="props.row.price">{{props.row.price}}</el-input>
 					</el-form-item>
 					<el-form-item label="商品分类">
 						<span>{{ props.row.subject }}</span>
+						<el-input v-if="props.row.editClicked" v-model="props.row.subject">{{props.row.subject}}</el-input>
 					</el-form-item>
 					<template v-if="admin==='true'">
-						<el-button size="mini" @click="handleEdit(scope.$index, scope.row)">Edit</el-button>
-						<el-button
-							size="mini"
-							type="danger"
-							@click="handleDelete(scope.$index, scope.row)"
-						>Delete</el-button>
+						<el-button v-if="!props.row.editClicked" size="mini" @click="handleEdit(props.$index, props.row)">Edit</el-button>
+						<el-button v-if="props.row.editClicked" size="mini" @click="handleSubmit(props.$index, props.row)">Submit</el-button>
+						<el-button size="mini" type="danger" @click="handleDelete(props.$index, props.row)">Delete</el-button>
 					</template>
 				</el-form>
 			</template>
@@ -47,7 +50,9 @@
 		<el-table-column label="ISBN编号" prop="isbn"></el-table-column>
 		<el-table-column label="描述" prop="descript"></el-table-column>
 	</el-table>
-  </div>
+	<br/>
+	<el-button v-if="admin==='true'" size="mini" type="primary" @click="handleAdd">Add</el-button>
+	</div>
 </template>
 
 <style>
@@ -60,29 +65,105 @@ export default {
 	data() {
 		return {
 			isActive: false,
-			tableData: [
-					{
-							url: 'good0.jpg',
-							name: 'java',
-							descript: "123",
-							isbn: "321",
-							stores: 20,
-							price: "¥50",
-							subject: "科技"
-					},
-					{
-							url: 'good1.jpg',
-							name: 'java',
-							descript: "123",
-							isbn: "321",
-							stores: 20,
-							price: "¥50",
-							subject: "科技"
-					}
-			]
+			tableData: [],
+			editClicked: false
 		};
 	},
 	methods: {
+		handleEdit: function(index, row){//以下两个函数处理时间极长，不知何故
+			row.editClicked = true;
+		},
+		handleSubmit: function(index,row){
+			if(row.name==null||row.descript==null||row.isbn==null||row.price==null||row.stores==null||row.subject)
+			{
+				this.$message({
+						type: 'danger',
+						message: '内容不能为空'
+					});
+			}
+			else{
+			this.axios({
+				method: 'put',
+				url: "http://localhost:8080/set/storages/"+row.id,
+				params:{
+					"name":row.name,
+					"descript":row.descript,
+					"isbn":row.isbn,
+					"price":row.price,
+					"stores":row.stores,
+					"subject":row.subject
+				} 
+			}).then(response => {
+				if(response.status==200){
+					this.$message({
+						type: 'success',
+						message: '修改成功!'
+					});
+				}
+			}).catch(error => {
+				JSON.stringify(error);
+				console.log(error);
+			});
+			row.editClicked = false;
+			}
+		},
+		handleDelete: function(index,row){
+			if(row.id==null){
+				alert("此商品尚未入库,请提交入库申请后再试");
+			}
+			else{
+			this.$confirm('确定删除此商品吗?', '提示', {
+					confirmButtonText: '确定',
+					cancelButtonText: '取消',
+					type: 'warning'
+				}).then(() => {
+					this.axios({
+						method: 'delete',
+						url: "http://localhost:8080/delete/storages/"+row.id,
+					}).then(response => {
+						if(response.status==200){
+							this.tableData.splice(index,1);
+							this.$message({
+								type: 'success',
+								message: response.data.result
+							});
+						}
+					}).catch(error => {
+						JSON.stringify(error);
+						console.log(error);
+					});
+				}).catch(() => {
+					this.$message({
+						type: 'info',
+						message: '已取消删除'
+					});          
+				});
+			}
+		},
+		handleAdd: function(){
+			this.axios({
+				method: 'put',
+				url: "http://localhost:8080/add/storages/",
+			}).then(response => {
+				if(response.status==200){
+					console.log(response.data.id);
+					var newItem = {
+						"id": response.data.id,
+						"name": "书籍名称",
+						"isbn": "ISBN编号",
+						"descript": "商品描述"
+					}
+					this.tableData.push(newItem);
+					this.$message({
+						type: 'success',
+						message: '已新建商品列,快去编辑吧！'
+					});
+				}
+			}).catch(error => {
+				JSON.stringify(error);
+				console.log(error);
+			});
+		},
 		selectGood:function(argc){
 			this.$router.push({
 				path: '/details',
