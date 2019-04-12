@@ -42,6 +42,7 @@
 						<el-button v-if="!props.row.editClicked" size="mini" @click="handleEdit(props.$index, props.row)">Edit</el-button>
 						<el-button v-if="props.row.editClicked" size="mini" @click="handleSubmit(props.$index, props.row)">Submit</el-button>
 						<el-button size="mini" type="danger" @click="handleDelete(props.$index, props.row)">Delete</el-button>
+						<el-button v-if="props.row.editClicked" size="mini" @click="handleCancel(props.$index, props.row)">Cancel</el-button>
 					</template>
 				</el-form>
 			</template>
@@ -72,6 +73,21 @@ export default {
 	methods: {
 		handleEdit: function(index, row){//以下两个函数处理时间极长，不知何故
 			row.editClicked = true;
+		},
+		handleCancel: function(index,row){
+			var self = this;
+			var url = "http://localhost:8080/storages/"+row.id;
+			this.axios
+			.get(url)
+			.then(response => {
+				self.tableData[index]=response.data;
+				console.log(response.data);
+			})
+			.catch(error => {
+				JSON.stringify(error);
+				console.log(error);
+			});
+			row.editClicked = false;
 		},
 		handleSubmit: function(index,row){
 			if(row.name==null||row.descript==null||row.isbn==null||row.price==null||row.stores==null||row.subject)

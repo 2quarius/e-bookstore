@@ -103,6 +103,8 @@ public class DealController {
                 deal.setDate(date);
                 deal.setBuyername(buyername);
                 deal.setGoodid(goods.get(i));
+                Storage storage = storageRepository.getOne(goods.get(i));
+                storage.setStores(storage.getStores()-numbers.get(i));
                 deal.setRate(new Double(0));
                 deal.setStatusEnum(OrderStatusEnum.Ordered);
                 deal.setNumber(numbers.get(i));
