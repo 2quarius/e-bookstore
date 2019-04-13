@@ -33,7 +33,7 @@
 							<hr data-am-widget="divider" class="am-divider am-divider-default"/>
 							<el-input-number size="medium" v-model="num" @change="handleChange" :min="1" :max="stores" label="描述文字"></el-input-number>
 							<p class="money" v-bind="totalMoney">{{'¥'+totalMoney}}</p>
-							<el-button type="success" round>加入购物车</el-button>
+							<el-button type="success" round @click="add2cart">加入购物车</el-button>
 						</div>
 					</div>
 				</div>
@@ -46,6 +46,7 @@
 </style>
 
 <script>
+import store from '../store.js'
 export default {
 		name: 'details',
 		data(){
@@ -96,6 +97,39 @@ export default {
 			},
 			handleChange:function(){
 				this.totalMoney = this.num*this.price.toFixed(2);
+			},
+			add2cart: function(){
+				if(store.state.user.username==null){
+					this.$message({
+						type: 'info',
+						message: '请先登录'
+					});
+				}
+				else{ 
+					var self = this;
+					this.axios({
+						method: 'post',
+						url : "http://localhost:8080/cart/"+store.state.user.username,
+						data:{
+							"goodid":self.id,
+							"number":self.num
+						}
+					}
+					).then((response)=>{
+						if(response.status!=200){
+							alert("something wrong!");
+						}
+						else{
+							this.$message({
+								type: 'success',
+								message: '已成功加入购物车'
+							});
+						}
+				}).catch(error => {
+						JSON.stringify(error);
+						console.log(error);
+				});
+				}
 			}
 		}
 }

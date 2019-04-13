@@ -28,7 +28,7 @@
       <el-table-column label="小计" width="150" prop="goodTotal"> </el-table-column> 
       <el-table-column label="操作">
         <template slot-scope="scope"> 
-          <el-button type="danger" @click="handleDelete(scope.$index)"> 删除
+          <el-button type="danger" @click="handleDelete(scope.$index,scope.row)"> 删除
             <i class="el-icon-delete2 el-icon--right"></i>
           </el-button>
         </template> 
@@ -89,15 +89,32 @@ export default {
 				console.log(error);
 			});
     },
-    handleDelete(index) { 
+    handleDelete(index,row) { 
       this.$confirm('确定删除该商品？', '提示', { 
         confirmButtonText: '确定', 
         cancelButtonText: '取消', 
         type: 'warning' 
       }).then(() => { 
         //删除数组中指定的元素 
-        this.tableData.splice(index,1);
-        this.$message({ type: 'success', message: '删除成功!' }); 
+        console.log(row.id);
+				this.axios({
+          method: 'delete',
+          url : "http://localhost:8080/cart/"+store.state.user.username,
+          params:{"goodid":row.id}
+        }
+        ).then((response)=>{
+            if(response.status!=200){
+              alert("something wrong!");
+            }
+            else{
+              this.tableData.splice(index,1);
+              this.$message({ type: 'success', message: '删除成功!' }); 
+              console.log("succeed!");
+            }
+        }).catch(error => {
+            JSON.stringify(error);
+            console.log(error);
+				});
       }).catch(() => { 
         this.$message({ type: 'info', message: '已取消删除' });
       });
@@ -143,7 +160,7 @@ export default {
   },
   mounted: function(){
     var self = this;
-    var url = "http://localhost:8080/storages/";
+    var url = "http://localhost:8080/cart/"+store.state.user.username;
     this.axios.get(url,
     {
       headers: {
@@ -154,10 +171,9 @@ export default {
     ).then((response)=>{
         self.tableData = response.data;
         for(var i = 0;i < self.tableData.length; i++){
-          self.tableData[i].number = 1;
-          self.tableData[i].goodTotal = self.tableData[i].price;
-          console.log(self.tableData[i].number);
+          self.tableData[i].goodTotal = self.tableData[i].price*self.tableData[i].number;
         }
+        console.log(response.data);
     }).catch(error => {
       JSON.stringify(error);
         console.log(error);

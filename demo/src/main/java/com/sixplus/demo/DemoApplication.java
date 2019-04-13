@@ -17,20 +17,4 @@ public class DemoApplication {
         SpringApplication.run(DemoApplication.class, args);
     }
 
-//    private static final Logger logger = LoggerFactory.getLogger(DemoApplication.class);
-//
-//    private CorsConfiguration buildConfig(){
-//        CorsConfiguration corsConfiguration = new CorsConfiguration();
-//        corsConfiguration.addAllowedOrigin("*");
-//        corsConfiguration.addAllowedHeader("*");
-//        corsConfiguration.addAllowedMethod("*");
-//        return corsConfiguration;
-//    }
-//
-//    public CorsFilter corsFilter(){
-//        logger.info("=======设置跨域过滤器=======");
-//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-//        source.registerCorsConfiguration("/**",buildConfig());
-//        return new CorsFilter(source);
-//    }
 }
