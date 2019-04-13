@@ -96,7 +96,6 @@ export default {
         type: 'warning' 
       }).then(() => { 
         //删除数组中指定的元素 
-        console.log(row.id);
 				this.axios({
           method: 'delete',
           url : "http://localhost:8080/cart/"+store.state.user.username,
