@@ -2,16 +2,21 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './views/Home.vue'
 import Login from './views/Login.vue'
+import Register from './views/Register.vue'
 import Shop from './views/Shop.vue'
 import SelfCenter from './views/SelfCenter.vue'
 import SelfSetting from './views/user/SelfSetting.vue'
 import DealSetting from './views/user/DealSetting.vue'
 import newCart from './views/newCart.vue'
 import Admin from './views/Admin.vue'
-import Deals from './views/Deals.vue'
+import UserDeals from './views/user/UserDeals.vue'
 import Details from './views/Details.vue'
 import UserAdmin from './views/admin/UserAdmin.vue'
 import GoodAdmin from './views/admin/GoodAdmin.vue'
+import EditDeals from './views/admin/EditDeals.vue'
+import Statistic from './views/admin/Statistic.vue'
+import UserSatistic from './views/admin/UserStatistic.vue'
+import TimeStatistic from './views/user/TimeStatistic.vue'
 
 Vue.use(Router)
 export default new Router({
@@ -25,6 +30,11 @@ export default new Router({
       path: '/login',
       name: 'login',
       component: Login  
+    },
+    {
+      path: '/register',
+      name: 'register',
+      component: Register
     },
     {
       path: '/shop',
@@ -55,9 +65,14 @@ export default new Router({
           component: newCart
         },
         {
-          path: 'deals',
-          name: 'deals',
-          component: Deals
+          path: 'userdeals',
+          name: 'userdeals',
+          component: UserDeals
+        },
+        {
+          path: 'time-statistic',
+          name: 'time-statistic',
+          component: TimeStatistic
         }
       ]
     },
@@ -79,6 +94,21 @@ export default new Router({
           path: 'users',
           name: 'user-admin',
           component: UserAdmin
+        },
+        {
+          path: 'editdeals',
+          name: 'editdelas',
+          component: EditDeals
+        },
+        {
+          path: 'statistic',
+          name: 'statistic',
+          component: Statistic
+        },
+        {
+          path: 'user-statistic',
+          name: 'user-statistic',
+          component: UserSatistic
         }
       ]
     },

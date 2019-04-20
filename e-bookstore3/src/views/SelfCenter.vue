@@ -22,8 +22,8 @@
         <el-submenu index="3">
           <template slot="title"><i class="el-icon-tickets"></i>订单</template>
           <el-menu-item-gropup>
-            <el-menu-item index="3-1" @click="goto('/selfcenter/deals')">历史订单</el-menu-item>
-            <el-menu-item index="3-2">已付款</el-menu-item>
+            <el-menu-item index="3-1" @click="goto('/selfcenter/userdeals')">历史订单</el-menu-item>
+            <el-menu-item index="3-2" @click="goto('/selfcenter/time-statistic')">购买详情</el-menu-item>
             <el-menu-item index="3-3">已发货</el-menu-item>
             <el-menu-item index="3-4">已签收</el-menu-item>
           </el-menu-item-gropup>

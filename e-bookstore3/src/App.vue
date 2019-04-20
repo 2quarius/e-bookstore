@@ -28,7 +28,7 @@
                 <li class="divider">
                 </li>
                 <li>
-                  <router-link to='/login'>注册新账号</router-link>
+                  <router-link to='/register'>注册新账号</router-link>
                 </li>
                 <li class="divider">
                 </li>
@@ -41,7 +41,8 @@
           <form class="navbar-form navbar-left" role="search">
             <div class="form-group">
               <input type="text" class="form-control" />
-            </div> <button type="submit" class="btn btn-default">查找</button>
+            </div> 
+            <button type="submit" class="btn btn-default">查找</button>
           </form>
           <ul class="nav navbar-nav navbar-right">
             <li>
@@ -57,7 +58,7 @@
                   <router-link to='/login'>个人设置</router-link>
                 </li>
                 <li>
-                  <router-link to='/login'>注册新账号</router-link>
+                  <router-link to='/register'>注册新账号</router-link>
                 </li>
                 <li class="divider">
                 </li>

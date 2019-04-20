@@ -1,6 +1,11 @@
 <template>
+  <div>
+    <el-input
+      v-model="search" style="width:60%"
+      size="mini"
+      placeholder="输入关键字搜索"/>
   <el-table
-    :data="tableData.filter(data => !search || data.nickname.toLowerCase().includes(search.toLowerCase()))"
+    :data="tableData.filter(data => !search || data.username.toLowerCase().includes(search.toLowerCase()))"
     style="width: 100%">
     <el-table-column
       label="ID"
@@ -11,13 +16,8 @@
       prop="username">
     </el-table-column>
     <el-table-column
-      align="right">
-      <template slot="header">
-        <el-input
-          v-model="search"
-          size="mini"
-          placeholder="输入关键字搜索"/>
-      </template>
+      label="Property"
+      align="left">
       <template slot-scope="scope">
         <el-switch
           style="display: block"
@@ -34,6 +34,7 @@
       </template>
     </el-table-column>
   </el-table>
+  </div>
 </template>
 
 <script>
@@ -42,7 +43,7 @@
     data() {
       return {
         tableData: [],
-        search: ''
+        search: '',
       }
     },
     mounted: function(){

@@ -70,7 +70,7 @@ export default {
       }
       this.axios({
         method: 'post',
-        url: "http://localhost:8080/deals/"+store.state.user.username,
+        url: "http://localhost:8080/deals/user/"+store.state.user.username,
 				headers: {
 					"Access-Control-Allow-Credentials": true,
 					"Access-Control-Allow-Origin": true

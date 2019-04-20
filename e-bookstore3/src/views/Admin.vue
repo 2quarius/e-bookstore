@@ -16,8 +16,9 @@
         <el-submenu index="2">
           <template slot="title"><i class="el-icon-tickets"></i>订单</template>
           <el-menu-item-gropup>
-            <el-menu-item index="2-1">订单管理</el-menu-item>
-            <el-menu-item index="2-2">销量统计</el-menu-item>
+            <el-menu-item index="2-1" @click="goto('/admin/editdeals')">订单管理</el-menu-item>
+            <el-menu-item index="2-2" @click="goto('/admin/statistic')">销量统计</el-menu-item>
+            <el-menu-item index="2-3" @click="goto('/admin/user-statistic')">用户个性化</el-menu-item>
           </el-menu-item-gropup>
         </el-submenu>
       </el-menu> 

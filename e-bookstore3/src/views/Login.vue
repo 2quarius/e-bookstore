@@ -28,7 +28,6 @@
             </div>
             <div class="form-group">
               <div class="col-sm-offset-2 col-sm-10">
-                 <button type="submit" class="btn btn-default" @click="register()">Register</button>
                  <button type="submit" class="btn btn-default" @click="sign()">Sign in</button>
               </div>
             </div>
@@ -77,32 +76,6 @@ export default {
         console.log(error);
       });
     },
-    register: function() {
-      var username = this.$refs.username.value;
-      var password = this.$refs.password.value;
-      if(username==null){
-        alert("用户名不能为空");
-      }
-      else if(password==null){
-        alert("密码不能为空");
-      }
-      else{
-        this.axios({
-          method: 'post',
-          url : "http://localhost:8080/users/",
-          params: {
-            "username": username,
-            "password": password,
-            "status": "1"
-          }
-        }).then((response)=>{
-          alert(response.data.result);
-        }).catch(error => {
-          JSON.stringify(error);
-          console.log(error);
-        });
-      }
-    }
   }
 }
 </script>

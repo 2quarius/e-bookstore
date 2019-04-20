@@ -2,7 +2,21 @@
 	<div>
 	<el-table
 		:data="tableData.filter(data => !search || data.goodname.toLowerCase().includes(search.toLowerCase()))"
-		style="width: 100%">
+		style="width: 100%;">
+		<el-table-column type="expand">
+			<template slot-scope="props">
+				<el-table :data="props.row.children" style="width: 100%;margin-bottom: 20px;" row-key="id">
+					<el-table-column prop="id" label="订单号" sortable width="180">
+					</el-table-column>
+					<el-table-column prop="date" label="日期" sortable width="180">
+					</el-table-column>
+					<el-table-column prop="name" label="商品名称" sortable width="180">
+					</el-table-column>
+					<el-table-column prop="number" label="商品数量" sortable width="180">
+					</el-table-column>
+				</el-table>
+			</template>
+		</el-table-column>
 		<el-table-column
 			label="ID"
 			prop="id">
@@ -10,14 +24,6 @@
 		<el-table-column
 			label="Date"
 			prop="date">
-		</el-table-column>
-		<el-table-column
-			label="Name"
-			prop="goodname">
-		</el-table-column>
-    <el-table-column
-			label="Number"
-			prop="number">
 		</el-table-column>
 		<el-table-column
 			align="right">
@@ -48,9 +54,9 @@
 </template>
 
 <script>
-import store from '../store';
+import store from '../../store';
 	export default {
-		name: 'deals',
+		name: 'userdeals',
 		data() {
 			return {
 				tableData: [],
@@ -80,7 +86,7 @@ import store from '../store';
 				}
 				this.axios({
 					method: 'post',
-					url: "http://localhost:8080/deals/rate",
+					url: "http://localhost:8080/deals/user/rate",
 					headers: {
 						"Access-Control-Allow-Credentials": true,
 						"Access-Control-Allow-Origin": true
@@ -109,9 +115,7 @@ import store from '../store';
 		},
 		mounted:function(){
 			var self = this;
-			console.log("mounted");
-			console.log(store.state.user.username);
-			var url = "http://localhost:8080/deals/"+store.state.user.username;
+			var url = "http://localhost:8080/deals/user/"+store.state.user.username;
 			console.log(url);
 			this.axios
 			.get(url, {
@@ -121,7 +125,29 @@ import store from '../store';
 				},
 			})
 			.then(response => {
-				self.tableData=response.data;
+				var tmp = new Array(response.data.length);
+				for(var i = 0; i < response.data.length; i++)
+				{
+					var list = new Array(response.data[i].goodnameToNumber.length);
+					var j = 0;
+					for(var item in response.data[i].goodnameToNumber)
+					{
+						list[j] = {
+							id: response.data[i].id,
+							date: response.data[i].date,
+							name: item,
+							number: response.data[i].goodnameToNumber[item]
+						}
+						j++;
+					}
+					tmp[i] = {
+						id: response.data[i].id,
+						date: response.data[i].date,
+						rate: response.data[i].rate,
+						children:list
+					}
+				}
+				self.tableData = tmp
 				console.log(response.data);
 			})
 			.catch(error => {

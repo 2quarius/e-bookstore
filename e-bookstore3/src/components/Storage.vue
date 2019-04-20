@@ -1,6 +1,6 @@
 <template>
 	<div>
-	<el-input v-model="search" style="width: 300px"
+	<el-input v-model="search" style="width: 60%" size="medium"
 							placeholder="请输入书名" prefix-icon="el-icon-search"/>
 	<el-table :data="tableData.filter(data=>!search || data.name.includes(search))" stripe style="width: 100%">
 		<el-table-column type="expand">
@@ -67,7 +67,8 @@ export default {
 		return {
 			isActive: false,
 			tableData: [],
-			editClicked: false
+			editClicked: false,
+			search:'',
 		};
 	},
 	methods: {
