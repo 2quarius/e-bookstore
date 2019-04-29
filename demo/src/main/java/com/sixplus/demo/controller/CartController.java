@@ -15,6 +15,7 @@ import reactor.core.publisher.Mono;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -74,16 +75,21 @@ public class CartController {
     public WebResponse deleteCart(@PathVariable(value = "username") String username,
                                   @RequestParam(value = "goodid") String goodid)
     {
+        System.out.println(goodid);
         if(redisService.exists(username))
         {
             List<Cart> carts = redisService.get(username);
-            for (Cart c:carts)
+            System.out.println(carts.size());
+            Iterator<Cart> it = carts.iterator();
+            while (it.hasNext())
             {
-                if (c.getGoodid()==Integer.valueOf(goodid))
+                Cart cart = it.next();
+                if (cart.getGoodid().equals(Integer.valueOf(goodid)))
                 {
-                    carts.remove(c);
+                    it.remove();
                 }
             }
+            System.out.println(carts.size());
             redisService.getAndSet(username,carts);
             return WebResponse.success("成功删除"+goodid+"号商品");
         }
