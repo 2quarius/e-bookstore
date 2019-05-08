@@ -96,7 +96,7 @@ export default {
 				this.$message({
 						type: 'danger',
 						message: '内容不能为空'
-					});
+				});
 			}
 			else{
 			this.axios({
