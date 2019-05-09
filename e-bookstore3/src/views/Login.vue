@@ -49,13 +49,9 @@ export default {
       var username = this.$refs.username.value;
       var password = this.$refs.password.value;
       alert('Username:'+username);
-      this.axios({
-          method: 'post',
-          url : "http://localhost:8080/login",
-          params: {
-            "username": username,
-            "password": password
-          },
+      this.postParamRequest('/login',{
+        "username": username,
+        "password": password
       }).then((response)=>{
         console.log(response.data);
         if(response.data.result=="管理员登录成功"){

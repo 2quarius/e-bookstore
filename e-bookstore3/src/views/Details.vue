@@ -70,16 +70,9 @@ export default {
 			fetchData(){
 				this.loading = true;
 				var self = this;
-				var url = "http://localhost:8080/storages/"+self.id;
+				var url = "/storages/"+self.id;
 				console.log(self.id);
-				this.axios.get(url,
-				{
-					headers: {
-				"Access-Control-Allow-Credentials":true,
-				"Access-Control-Allow-Origin":true,
-					}
-				}
-				).then((response)=>{
+				this.getRequest(url).then((response)=>{
 					self.$data.url = response.data.url;
 					self.$data.name = response.data.name;
 					self.$data.isbn = response.data.isbn;
@@ -107,15 +100,11 @@ export default {
 				}
 				else{ 
 					var self = this;
-					this.axios({
-						method: 'post',
-						url : "http://localhost:8080/cart/"+store.state.user.username,
-						data:{
-							"goodid":self.id,
-							"number":self.num
-						}
-					}
-					).then((response)=>{
+					var url = "/cart/"+store.state.user.username;
+					this.postBodyRequest(url,{
+						"goodid":self.id,
+						"number":self.num
+					}).then((response)=>{
 						if(response.status!=200){
 							alert("something wrong!");
 						}

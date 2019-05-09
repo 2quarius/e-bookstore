@@ -31,8 +31,8 @@ axios.interceptors.response.use(data => {
   }
   // return Promise.resolve(err);
 })
-let base = '';
-export const postRequest = (url, params) => {
+let base = 'http://localhost:8080';
+export const postParamRequest = (url, params) => {
   return axios({
     method: 'post',
     url: `${base}${url}`,
@@ -49,13 +49,13 @@ export const postRequest = (url, params) => {
     }
   });
 }
-export const uploadFileRequest = (url, params) => {
+export const postBodyRequest = (url, params) => {
   return axios({
     method: 'post',
     url: `${base}${url}`,
     data: params,
     headers: {
-      'Content-Type': 'multipart/form-data'
+      'Content-Type': 'application/json'
     }
   });
 }

@@ -5,9 +5,10 @@ import App from './App.vue'
 import router from './router'
 import axios from 'axios'
 import {getRequest} from './utils/api'
-import { postRequest } from './utils/api'
+import {postParamRequest} from './utils/api'
 import {deleteRequest} from './utils/api'
 import {putRequest} from './utils/api'
+import {postBodyRequest} from './utils/api'
 import store from './store'
 
 Vue.config.productionTip = false
@@ -15,9 +16,10 @@ Vue.use(ElementUI,axios);
 
 Vue.prototype.axios = axios;
 Vue.prototype.getRequest = getRequest;
-Vue.prototype.postRequest = postRequest;
+Vue.prototype.postParamRequest = postParamRequest;
 Vue.prototype.deleteRequest = deleteRequest;
 Vue.prototype.putRequest = putRequest;
+Vue.prototype.postBodyRequest = postBodyRequest;
 axios.defaults.withCredentials = true;
 router.beforeEach((to,from,next)=>{
   if(to.meta.requireAuth&&to.meta.requireMore){
