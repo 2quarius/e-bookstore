@@ -1,20 +1,20 @@
 package com.sixplus.demo.config;
 
+import com.sixplus.demo.config.entryPoint.CustomAuthenticationEntryPoint;
+import com.sixplus.demo.config.handlers.CustomAccessDeniedHandler;
+import com.sixplus.demo.config.handlers.CustomAuthenticationFailureHandler;
+import com.sixplus.demo.config.handlers.CustomAuthenticationSuccessHandler;
+import com.sixplus.demo.config.handlers.CustomLogoutSuccessHandler;
+import com.sixplus.demo.config.userDetails.UserDetailsServiceImpl;
 import com.sixplus.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
 
 @Configuration
 @EnableWebSecurity
@@ -48,7 +48,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .and()
                 .authorizeRequests()
-                .antMatchers("/user/{id}","/deals/user/{buyername}","/deals/user/rate","/deals/user/statistic/{buyername}","/cart/**").hasAuthority("USER")
+                .antMatchers("/user/{id}","/deals/user/{buyername}","/deals/user/rate","/deals/user/statistic/{buyername}","/cart/**","/book_comment/**").hasAuthority("USER")
                 .antMatchers("/add/**","/delete/**","/set/**","/get/**","/deals/admin/statistic","/deals/admin/userSpecify","/deals").hasAuthority("ADMIN")
                 .antMatchers("/","/users","/storages","/storages/{id}").permitAll()
                 .and()

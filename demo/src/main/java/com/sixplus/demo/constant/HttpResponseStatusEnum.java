@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 public enum HttpResponseStatusEnum implements CommonResponse {
-    SUCCESS("0","success"),FORBIDDEN("2","forbidden");
+    SUCCESS("0","success"),FORBIDDEN("2","forbidden"),ERROR("3","error");
 
     private String code;
     private String message;

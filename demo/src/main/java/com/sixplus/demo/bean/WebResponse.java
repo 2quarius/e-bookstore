@@ -41,4 +41,8 @@ public class WebResponse {
     public static WebResponse forbidden(){
         return new WebResponse(HttpResponseStatusEnum.FORBIDDEN.getCode(),HttpResponseStatusEnum.FORBIDDEN.getMessage(),null);
     }
+
+    public static WebResponse error(){
+        return new WebResponse(HttpResponseStatusEnum.ERROR.getCode(),HttpResponseStatusEnum.ERROR.getMessage(),null);
+    }
 }

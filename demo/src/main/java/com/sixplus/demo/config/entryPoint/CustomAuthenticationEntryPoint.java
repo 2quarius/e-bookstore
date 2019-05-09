@@ -1,10 +1,10 @@
-package com.sixplus.demo.config;
+package com.sixplus.demo.config.entryPoint;
 
 import com.alibaba.fastjson.JSON;
 import com.sixplus.demo.bean.WebResponse;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.AuthenticationEntryPoint;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -12,12 +12,14 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
-public class CustomAuthenticationFailureHandler implements AuthenticationFailureHandler {
+public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint {
     @Override
-    public void onAuthenticationFailure(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException e) throws IOException, ServletException {
+    public void commence(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException e) throws IOException, ServletException {
+        System.out.println("enterpoint");
+        System.out.println(e.getMessage());
         WebResponse response = new WebResponse();
-        response.setCode("-1");
-        response.setMessage(e.getMessage());
+        response.setCode(String.valueOf(HttpServletResponse.SC_UNAUTHORIZED));
+        response.setMessage("authenticate fail");
         httpServletResponse.setStatus(HttpServletResponse.SC_OK);
         httpServletResponse.setContentType(MediaType.APPLICATION_JSON_VALUE);
         httpServletResponse.setCharacterEncoding(StandardCharsets.UTF_8.toString());

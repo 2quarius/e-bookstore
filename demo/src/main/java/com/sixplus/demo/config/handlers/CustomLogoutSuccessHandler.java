@@ -1,4 +1,4 @@
-package com.sixplus.demo.config;
+package com.sixplus.demo.config.handlers;
 
 import com.alibaba.fastjson.JSON;
 import com.sixplus.demo.bean.WebResponse;

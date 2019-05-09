@@ -1,5 +1,6 @@
-package com.sixplus.demo.config;
+package com.sixplus.demo.config.userDetails;
 
+import com.sixplus.demo.config.userDetails.MyUserDetails;
 import com.sixplus.demo.entity.User;
 import com.sixplus.demo.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
