@@ -11,7 +11,7 @@ import javax.validation.constraints.NotEmpty;
 @NoArgsConstructor
 public class CommentRequest {
     private String commentId;
-    private Integer userId;
+    private String userName;
     @NotEmpty
     private String context;
 }

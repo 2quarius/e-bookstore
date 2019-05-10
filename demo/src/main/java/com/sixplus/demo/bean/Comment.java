@@ -12,6 +12,9 @@ public class Comment {
     public String commentId;
     public Date date;
     public Integer userId;
+    public String userName;
+    public String fatherName;
+    public Integer likeNum;
     public String context;
     public Vector<Comment> children;
 }

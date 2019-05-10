@@ -72,3 +72,14 @@
 	margin-right: -4px;
 	padding: 0.6rem 1rem;
 }
+.product_wrapper{width:1200px;margin:0 auto;font:12px "Hiragino Sans GB","Verdana","Simsun";background-color:#fff}
+.product_main .pic_info{
+	float:left;width:320px;padding:0 20px 30px 0
+}
+.product_main .pic_info .pic{
+	width:320px;height:320px;margin:0 auto;position:relative;z-index:7777
+}
+.product_main .show_info{float:left;width:860px;font:12px "Verdana","Simsun";color:#646464}
+.product_main .sale_box{line-height:24px;padding:0 0 0 10px;background:url(../../static/img/sale_box_bg.png) repeat-y 670px 0;margin-top:5px}
+.product_main .sale_box .sale_box_left{width:630px;float:left}
+.product_content{width:1200px;margin:22px auto 0}

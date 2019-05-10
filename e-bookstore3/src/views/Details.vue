@@ -1,29 +1,31 @@
 <template>
-<div class="my-syabout">
-		<div class="am-container my-qcwbj">
-			<hr data-am-widget="divider" class="am-divider am-divider-default"/>
-			<div data-am-widget="intro" class="am-intro am-cf am-intro-default">
-				<div class="am-g am-intro-bd">
-					<div class="am-intro-left am-u-sm-5"><img :src="'static/img/'+url" alt="小娜"/></div>
-					<div class="am-intro-right am-u-sm-7">
-						<div data-am-widget="titlebar" class="am-titlebar am-titlebar-default">
-							<nav class="am-titlebar-nav">
-								<p class="my-title-l">name</p>
-								<p class="my-title-r">书名</p>
-								<p class="content" :data="name">{{name}}</p>
-							</nav>
-							<hr data-am-widget="divider" class="am-divider am-divider-default"/>
-							<nav class="am-titlebar-nav">
-								<p class="my-title-l">ISBN</p>
-								<p class="my-title-r">图书编号</p>
-								<p class="content" :data="isbn">{{isbn}}</p>
-							</nav>
-							<hr data-am-widget="divider" class="am-divider am-divider-default"/>
-							<nav class="am-titlebar-nav">
-								<p class="my-title-l">catagory</p>
-								<p class="my-title-r">类别</p>
-								<p class="content">{{subject}}</p>
-							</nav>
+<div class="product_wrapper">
+	<div class="product_main clearfix">
+		<div class="my-syabout">
+			<div class="am-container my-qcwbj">
+				<hr data-am-widget="divider" class="am-divider am-divider-default"/>
+				<div data-am-widget="intro" class="am-intro am-cf am-intro-default">
+					<div class="am-g am-intro-bd">
+						<div class="am-intro-left am-u-sm-5"><img :src="'static/img/'+url" alt="小娜"/></div>
+						<div class="am-intro-right am-u-sm-7">
+							<div data-am-widget="titlebar" class="am-titlebar am-titlebar-default">
+								<nav class="am-titlebar-nav">
+									<p class="my-title-l">name</p>
+									<p class="my-title-r">书名</p>
+									<p class="content" :data="name">{{name}}</p>
+								</nav>
+								<hr data-am-widget="divider" class="am-divider am-divider-default"/>
+								<nav class="am-titlebar-nav">
+									<p class="my-title-l">ISBN</p>
+									<p class="my-title-r">图书编号</p>
+									<p class="content" :data="isbn">{{isbn}}</p>
+								</nav>
+								<hr data-am-widget="divider" class="am-divider am-divider-default"/>
+								<nav class="am-titlebar-nav">
+									<p class="my-title-l">catagory</p>
+									<p class="my-title-r">类别</p>
+									<p class="content">{{subject}}</p>
+								</nav>
 							<hr data-am-widget="divider" class="am-divider am-divider-default"/>
 							<nav class="am-titlebar-nav">
 								<p class="my-title-l">description</p>
@@ -40,6 +42,11 @@
 			</div>
 		</div>
 	</div>
+	</div>
+	<div class="product_content">
+		<comment :comments="commentData" :bookId="id"></comment>
+	</div>
+</div>
 </template>
 <style>
 @import "/lib/css/details.css";
@@ -47,8 +54,12 @@
 
 <script>
 import store from '../store.js'
+import comment from '../components/Comment.vue'
 export default {
 		name: 'details',
+		components: {
+			comment
+		},
 		data(){
 			return{
 				id: this.$route.query.goodId,
@@ -61,7 +72,11 @@ export default {
 				price: '',
 				totalMoney: '',
 				stores: '',
+				commentData: [],
 			}
+		},
+		created(){
+			
 		},
 		mounted(){
 			this.fetchData();
@@ -70,9 +85,9 @@ export default {
 			fetchData(){
 				this.loading = true;
 				var self = this;
-				var url = "/storages/"+self.id;
+				var urlForInfo = "/storages/"+self.id;
 				console.log(self.id);
-				this.getRequest(url).then((response)=>{
+				this.getRequest(urlForInfo).then((response)=>{
 					self.$data.url = response.data.url;
 					self.$data.name = response.data.name;
 					self.$data.isbn = response.data.isbn;
@@ -84,6 +99,14 @@ export default {
 					console.log(self.$data);
 					console.log(response.data);
 				}).catch(error => {
+					JSON.stringify(error);
+					console.log(error);
+				});
+				var urlForComment = "/book_comment/"+self.id;
+				this.getRequest(urlForComment).then((response)=>{
+					console.log(response.data.result.comments);
+					this.commentData = response.data.result.comments;
+				}).catch(error=>{
 					JSON.stringify(error);
 					console.log(error);
 				});

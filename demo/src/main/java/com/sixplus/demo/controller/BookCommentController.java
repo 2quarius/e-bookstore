@@ -6,6 +6,7 @@ import com.sixplus.demo.bean.CommentRequest;
 import com.sixplus.demo.bean.WebResponse;
 import com.sixplus.demo.entity.BookComment;
 import com.sixplus.demo.repository.BookCommentRepository;
+import com.sixplus.demo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -24,6 +25,8 @@ import java.util.Vector;
 public class BookCommentController {
     @Autowired
     private BookCommentRepository bookCommentRepository;
+    @Autowired
+    private UserRepository userRepository;
     private Comment findComment(BookComment bc,String commentId)
     {
         Vector<Comment> comments = bc.getComments();
@@ -73,9 +76,12 @@ public class BookCommentController {
                 if (bookCommentRepository.existsById(bookId)){
                     bookComment = bookCommentRepository.getById(bookId);
                     Vector<Comment> children = new Vector<>();
+                    Integer userId = userRepository.findByUsername(content.getUserName()).getId();
                     Comment comment = new Comment(UUID.randomUUID().toString(),
                             new Date(System.currentTimeMillis()),
-                            content.getUserId(),
+                            userId,
+                            content.getUserName(), null,
+                            new Integer(0),
                             content.getContext(),
                             children);
                     bookComment.getComments().add(comment);
@@ -84,9 +90,12 @@ public class BookCommentController {
                 //如果该book以前没有评论
                 else {
                     Vector<Comment> children = new Vector<>();
+                    Integer userId = userRepository.findByUsername(content.getUserName()).getId();
                     Comment comment = new Comment(UUID.randomUUID().toString(),
                             new Date(System.currentTimeMillis()),
-                            content.getUserId(),
+                            userId,
+                            content.getUserName(), null,
+                            new Integer(0),
                             content.getContext(),
                             children);
                     Vector<Comment> comments = new Vector<>();
@@ -101,9 +110,11 @@ public class BookCommentController {
                     bookComment = bookCommentRepository.getById(bookId);
                     Comment comment = findComment(bookComment,content.getCommentId());
                     Vector<Comment> children = new Vector<>();
+                    System.out.println(content.getUserName());
+                    Integer userId = userRepository.findByUsername(content.getUserName()).getId();
                     Comment newComment = new Comment(UUID.randomUUID().toString(),
                             new Timestamp(System.currentTimeMillis()),
-                            content.getUserId(),
+                            userId,content.getUserName(),comment.userName,new Integer(0),
                             content.getContext(),
                             children);
                     comment.children.add(newComment);

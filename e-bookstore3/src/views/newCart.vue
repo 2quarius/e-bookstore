@@ -68,6 +68,7 @@ export default {
           numbers = this.multipleSelection[i].number;
         }
       }
+      var self = this;
       this.axios({
         method: 'post',
         url: "http://localhost:8080/deals/user/"+store.state.user.username,
@@ -81,8 +82,31 @@ export default {
         } 
 			})
 			.then(response => {
-				console.log(response.data);
-				console.log("get response");
+        self.$message({ type: 'success', message: '生成订单成功!' }); 
+        for(var i = 0;i<self.multipleSelection.length;i++){
+          for(var j = 0;j<self.tableData.length;j++){
+            if(self.multipleSelection[i].id===self.tableData[j].id){
+              self.tableData.splice(j,1);              
+              console.log(self.multipleSelection[i].id);
+              this.axios({
+                method: 'delete',
+                url : "http://localhost:8080/cart/"+store.state.user.username,
+                params:{"goodid":self.multipleSelection[i].id}
+              }).then((response)=>{
+                console.log(response.data);
+                console.log(response.data.code);
+                if(response.data.code === 0){
+                  self.tableData.splice(j+1,1);
+                }
+              }).catch(error=>{
+                JSON.stringify(error);
+				        console.log(error);
+              })
+              j--;
+              i--;
+            }
+          }
+        }
 			})
 			.catch(error => {
 				JSON.stringify(error);
