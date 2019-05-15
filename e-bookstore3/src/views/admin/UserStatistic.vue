@@ -20,19 +20,14 @@ am4core.useTheme(am4themes_kelly);
 export default {
 	name: 'user-statistic',
 	mounted() {
-        let chart = am4core.create(this.$refs.chartdiv, am4charts.XYChart);
-        chart.hiddenState.properties.opacity = 0;
+    let chart = am4core.create(this.$refs.chartdiv, am4charts.XYChart);
+    chart.hiddenState.properties.opacity = 0;
 		// chart.paddingRight = 20;
 		//从后端获取数据
-		var url = "http://localhost:8080/deals/admin/userSpecify";
-		this.axios.get(url,
-		{
-			headers: {
-				"Access-Control-Allow-Credentials":true,
-				"Access-Control-Allow-Origin":true,
-			},
-		}
-		).then((response)=>{
+		var url = "/deals/admin/userSpecify";
+		this.axios
+			.getRequest(url)
+			.then((response)=>{
 				console.log(response.data);
 				var tmp = new Array();
 				for(var i = 0;i<response.data.length;i++)
@@ -48,21 +43,21 @@ export default {
 				chart.data = tmp;
 				console.log(chart.data);
 			}).catch(error => {
-			JSON.stringify(error);
+				JSON.stringify(error);
 				console.log(error);
-		});
+			});
 
 
 // chart.dateFormatter.inputDateFormat = "yyyyMMdd";
 
-        let categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
-        categoryAxis.renderer.grid.template.location = 0;
-        categoryAxis.renderer.minGridDistance=40;
-        categoryAxis.dataFields.category = "user";
-        categoryAxis.fontSize = 11;
+    let categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
+    categoryAxis.renderer.grid.template.location = 0;
+    categoryAxis.renderer.minGridDistance=40;
+    categoryAxis.dataFields.category = "user";
+    categoryAxis.fontSize = 11;
 		
 		let valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
-        valueAxis.tooltip.disabled = true;
+    valueAxis.tooltip.disabled = true;
 
 		let series = chart.series.push(new am4charts.ColumnSeries());
 		series.dataFields.categoryX = "user";

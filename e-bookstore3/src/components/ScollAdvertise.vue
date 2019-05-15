@@ -107,7 +107,6 @@ export default {
         info3: String,
         info4: String,
         info5: String
-
     }
 }
 </script>

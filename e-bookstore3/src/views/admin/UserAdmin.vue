@@ -48,15 +48,10 @@
     },
     mounted: function(){
     var self = this;
-    var url = "http://localhost:8080/get/users/";
-    this.axios.get(url,
-    {
-      headers: {
-        "Access-Control-Allow-Credentials":true,
-        "Access-Control-Allow-Origin":true,
-      },
-    }
-    ).then((response)=>{
+    var url = "/get/users/";
+    this.axios
+      .getRequest(url)
+      .then((response)=>{
         self.tableData=response.data;
         console.log(self.tableData);
       }).catch(error => {

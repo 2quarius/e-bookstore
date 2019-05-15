@@ -24,15 +24,10 @@ export default {
 
 		chart.paddingRight = 20;
 		//从后端获取数据
-		var url = "http://localhost:8080/deals/admin/statistic";
-		this.axios.get(url,
-		{
-			headers: {
-				"Access-Control-Allow-Credentials":true,
-				"Access-Control-Allow-Origin":true,
-			},
-		}
-		).then((response)=>{
+		var url = "/deals/admin/statistic";
+		this.axios
+			.getRequest(url)
+			.then((response)=>{
 				console.log(response.data);
 				var tmp = new Array();
 				for(var i = 0;i<response.data.length;i++)
@@ -48,7 +43,7 @@ export default {
 				chart.data = tmp;
 				console.log(chart.data);
 			}).catch(error => {
-			JSON.stringify(error);
+				JSON.stringify(error);
 				console.log(error);
 		});
 

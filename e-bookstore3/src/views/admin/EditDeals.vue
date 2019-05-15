@@ -60,15 +60,10 @@ export default {
 	},
 	mounted: function(){
 		var self = this;
-    var url = "http://localhost:8080/deals";
-    this.axios.get(url,
-    {
-      headers: {
-        "Access-Control-Allow-Credentials":true,
-        "Access-Control-Allow-Origin":true,
-      },
-    }
-    ).then((response)=>{
+    var url = "/deals";
+		this.axios
+			.getRequest(url)
+			.then((response)=>{
 				var tmp = new Array();
 				for(var i = 0; i < response.data.length; i++)
 				{

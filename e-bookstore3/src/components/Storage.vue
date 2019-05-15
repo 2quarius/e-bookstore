@@ -77,9 +77,9 @@ export default {
 		},
 		handleCancel: function(index,row){
 			var self = this;
-			var url = "http://localhost:8080/storages/"+row.id;
+			var url = "/storages/"+row.id;
 			this.axios
-			.get(url)
+			.getRequest(url)
 			.then(response => {
 				self.tableData[index]=response.data;
 				console.log(response.data);
@@ -94,34 +94,43 @@ export default {
 			if(row.name==null||row.descript==null||row.isbn==null||row.price==null||row.stores==null||row.subject)
 			{
 				this.$message({
-						type: 'danger',
-						message: '内容不能为空'
+					type: 'danger',
+					message: '内容不能为空'
 				});
 			}
 			else{
-			this.axios({
-				method: 'put',
-				url: "http://localhost:8080/set/storages/"+row.id,
-				params:{
-					"name":row.name,
-					"descript":row.descript,
-					"isbn":row.isbn,
-					"price":row.price,
-					"stores":row.stores,
-					"subject":row.subject
-				} 
-			}).then(response => {
-				if(response.status==200){
-					this.$message({
-						type: 'success',
-						message: '修改成功!'
-					});
-				}
-			}).catch(error => {
-				JSON.stringify(error);
-				console.log(error);
-			});
-			row.editClicked = false;
+				// var url = "http://localhost:8080/set/storages/"+row.id;
+				// var params = {
+				// 	"name":row.name,
+				// 	"descript":row.descript,
+				// 	"isbn":row.isbn,
+				// 	"price":row.price,
+				// 	"stores":row.stores,
+				// 	"subject":row.subject
+				// };
+				this.axios({
+					method: 'put',
+					url: "http://localhost:8080/set/storages/"+row.id,
+					params:{
+						"name":row.name,
+						"descript":row.descript,
+						"isbn":row.isbn,
+						"price":row.price,
+						"stores":row.stores,
+						"subject":row.subject
+					} 
+				}).then(response => {
+					if(response.status==200){
+						this.$message({
+							type: 'success',
+							message: '修改成功!'
+						});
+					}
+				}).catch(error => {
+					JSON.stringify(error);
+					console.log(error);
+				});
+				row.editClicked = false;
 			}
 		},
 		handleDelete: function(index,row){
@@ -200,14 +209,9 @@ export default {
 	},
 	mounted: function() {
 		var self = this;
-		var url = "http://localhost:8080/storages";
+		var url = "/storages";
 		this.axios
-			.get(url, {
-				headers: {
-					"Access-Control-Allow-Credentials": true,
-					"Access-Control-Allow-Origin": true
-				}
-			})
+			.getRequest(url)
 			.then(response => {
 				self.tableData=response.data;
 				console.log(response.data);

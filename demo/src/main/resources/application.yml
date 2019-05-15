@@ -21,3 +21,18 @@ spring:
       max-idle: 8
       min-idle: 0
       max-wait: 1
+management:
+  server:
+    servlet:
+      context-path: "/actuator"
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+      base-path: "/management"
+  endpoint:
+    shutdown:
+      enabled: false
+info:
+  app:
+    name: "ebook"

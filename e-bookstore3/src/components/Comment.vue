@@ -19,7 +19,7 @@
           <i class="iconfont icon-comment"></i>
           <span>回复</span>
         </span>
-				<span class="comment-delete" v-if="rights(item)" @click="deleteUpperComment(item)">
+				<span class="comment-delete" v-if="rights(item)" @click="deleteComment(item)">
           <i class="iconfont icon-comment"></i>
           <span>删除</span>
         </span>
@@ -37,7 +37,7 @@
               <i class="iconfont icon-comment"></i>
               <span>回复</span>
             </span>
-						<span class="delete-text" v-if="rights(children)" @click="deleteLowerComment(item,children)">
+						<span class="delete-text" v-if="rights(children)" @click="deleteComment(item,children)">
               <!-- icon needs to be changed -->
 							<i class="iconfont icon-comment"></i>
               <span>删除</span>
@@ -201,8 +201,6 @@ import Vue from 'vue'
 			 * 判断此登录用户是否有权限删除此条评论
 			 */
 			rights(item){
-				console.log(item.userName);
-				console.log(store.state.user.username);
 				if(item.userName === store.state.user.username){
 					return true;
 				}
@@ -233,29 +231,32 @@ import Vue from 'vue'
 					console.log(error);
 				});
 			},
-			deleteUpperComment(item){
-				if(item.fatherName === ''){
-					var fatherCommentId = null;
-					this.deleteHelper(item,fatherCommentId);
-				}
-				else{
-					this.$message({
-						type: 'error',
-						message: '错误操作'
-					});
-				}
-			},
-			deleteLowerComment(item,children){
-				if(children.fatherName === ''){
-					this.$message({
-						type: 'error',
-						message: '错误操作'
-					});
-				}
-				else{
-					var fatherCommentId = item.commentId;
-					this.deleteHelper(children,fatherCommentId);
-				}
+			deleteComment(item,children){
+        if(children){
+          if(children.fatherName === ''){
+					  this.$message({
+						  type: 'error',
+						  message: '错误操作'
+					  });
+				  }
+				  else{
+					  var fatherCommentId = item.commentId;
+					  this.deleteHelper(children,fatherCommentId);
+				  }
+        }
+        else{
+          if(item.fatherName === ''){
+					  var fatherCommentId = null;
+					  this.deleteHelper(item,fatherCommentId);
+				  }
+				  else{
+					  this.$message({
+						  type: 'error',
+						  message: '错误操作'
+					  });
+				  }
+        }
+				
 			
 			}
     },
