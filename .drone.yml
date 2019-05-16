@@ -1,0 +1,9 @@
+kind: pipeline
+name: e-bookstore
+
+steps:
+  - name: build
+    image: maven
+    commands:
+    - ls
+    - pwd
