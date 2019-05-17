@@ -9,3 +9,4 @@ steps:
     - pwd
     - cd /drone/src/demo
     - ls
+    - mvn install
