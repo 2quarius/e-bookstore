@@ -7,3 +7,5 @@ steps:
     commands:
     - ls
     - pwd
+    - cd /drone/src/demo
+    - ls
