@@ -3,7 +3,7 @@ name: e-bookstore
 
 steps:
   - name: build
-    image: maven
+    image: maven:3.6.1-jdk-8-slim
     volumes:
     - name: cache
       path: /root/.m2
