@@ -4,16 +4,16 @@ name: e-bookstore
 steps:
   - name: build
     image: maven
-    // volumes:
-    // - name: cache
-    //   path: /root/.m2
+    volumes:
+    - name: cache
+      path: /root/.m2
     commands:
     - ls
     - pwd
     - cd /drone/src/demo
     - ls
     - mvn install
-// volumes:
-//   - name: cache
-//     host:
-//       path: /tmp/cache
+volumes:
+- name: cache
+  host:
+    path: /tmp/cache
