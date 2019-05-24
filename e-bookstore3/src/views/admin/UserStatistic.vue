@@ -25,8 +25,7 @@ export default {
 		// chart.paddingRight = 20;
 		//从后端获取数据
 		var url = "/deals/admin/userSpecify";
-		this.axios
-			.getRequest(url)
+		this.getRequest(url)
 			.then((response)=>{
 				console.log(response.data);
 				var tmp = new Array();

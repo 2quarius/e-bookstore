@@ -47,9 +47,18 @@
 		</el-table-column>
 	</el-table>
 	<div style="margin-top: 20px"> 
-		<el-button v-if="reRate" size="small" type="primary" @click="submit">确定</el-button>
-		<el-button v-if="!reRate" size="small" type="info" @click="rechoose">重置</el-button>
+		<el-button v-if="reRate" size="small" type="primary" @click="submit" style="float:right">确定</el-button>
+		<el-button v-if="!reRate" size="small" type="info" @click="rechoose" style="float:right">重置</el-button>
 	</div>
+	<el-pagination
+			@size-change="handleSizeChange"
+			@current-change="handleCurrentChange"
+			:current-page="currentPage"
+			:page-sizes="[5, 10, 15, 20]"
+			:page-size="pageSize"
+			layout="total, sizes, prev, pager, next, jumper"
+			:total="totalEntry">
+		</el-pagination>
 	</div>
 </template>
 
@@ -62,10 +71,60 @@ import store from '../../store';
 				tableData: [],
 				search: '',
 				disabled: false,
-				reRate: true
+				reRate: true,
+				currentPage: 1,
+				pageSize: 5,
+				totalEntry: ''
 			}
 		},
 		methods:{
+			heplerFunc(index){
+				var self = this;
+				var url = "/deals/user/"+store.state.user.username;
+				console.log(url);
+				this.getRequest(url)
+				.then(response => {
+					self.totalEntry = response.data.length;
+					var tmp = response.data.length>(index+self.pageSize)?new Array(self.pageSize): new Array(response.data.length-index);
+					for(var i = index; i<tmp.length+index; i++)
+					{
+						var list = new Array(response.data[i].goodnameToNumber.length);
+						var j = 0;
+						for(var item in response.data[i].goodnameToNumber)
+						{
+							list[j] = {
+								id: response.data[i].id,
+								date: response.data[i].date,
+								name: item,
+								number: response.data[i].goodnameToNumber[item]
+							}
+							j++;
+						}
+						tmp[i-index] = {
+							id: response.data[i].id,
+							date: response.data[i].date,
+							rate: response.data[i].rate,
+							children:list
+						}
+					}
+					self.tableData = tmp
+					console.log(response.data);
+				})
+				.catch(error => {
+					JSON.stringify(error);
+					console.log(error);
+				});
+			},
+			handleSizeChange(val) {
+				this.pageSize = val;
+				var index = this.pageSize*(this.currentPage-1);
+				this.heplerFunc(index);
+			},
+			handleCurrentChange(val) {
+				this.currentPage = val;
+				var index = this.pageSize*(this.currentPage-1);
+				this.heplerFunc(index);
+			},
 			submit: function(){
 				var ids = null;
 				var rates = null;
@@ -114,46 +173,7 @@ import store from '../../store';
 			}
 		},
 		mounted:function(){
-			var self = this;
-			var url = "http://localhost:8080/deals/user/"+store.state.user.username;
-			console.log(url);
-			this.axios
-			.get(url, {
-				headers: {
-					"Access-Control-Allow-Credentials": true,
-					"Access-Control-Allow-Origin": true
-				},
-			})
-			.then(response => {
-				var tmp = new Array(response.data.length);
-				for(var i = 0; i < response.data.length; i++)
-				{
-					var list = new Array(response.data[i].goodnameToNumber.length);
-					var j = 0;
-					for(var item in response.data[i].goodnameToNumber)
-					{
-						list[j] = {
-							id: response.data[i].id,
-							date: response.data[i].date,
-							name: item,
-							number: response.data[i].goodnameToNumber[item]
-						}
-						j++;
-					}
-					tmp[i] = {
-						id: response.data[i].id,
-						date: response.data[i].date,
-						rate: response.data[i].rate,
-						children:list
-					}
-				}
-				self.tableData = tmp
-				console.log(response.data);
-			})
-			.catch(error => {
-				JSON.stringify(error);
-				console.log(error);
-			});
+			this.heplerFunc(0);
 		}
 	}
 </script>

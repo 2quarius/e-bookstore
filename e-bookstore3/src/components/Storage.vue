@@ -1,13 +1,13 @@
 <template>
 	<div>
-	<el-input v-model="search" style="width: 60%" size="medium"
-							placeholder="请输入书名" prefix-icon="el-icon-search"/>
+	<el-input v-model="search" style="margin:20px;width: 50%" size="medium"
+							placeholder="请输入书名" prefix-icon="el-icon-search" clearable/>
 	<el-table :data="tableData.filter(data=>!search || data.name.includes(search))" stripe style="width: 100%">
 		<el-table-column type="expand">
 			<template slot-scope="props">
 				<el-form label-position="left" inline class="demo-table-expand">
 					<el-from-item label="封面">
-						<img :src="'/static/img/'+props.row.url" @click="selectGood(props.row)">
+						<img style="width:200px;height:200px" :src="'/static/img/'+props.row.url" @click="selectGood(props.row)">
 					</el-from-item>
 					<br>
 					<el-form-item label="商品名称">
@@ -49,10 +49,19 @@
 		</el-table-column>
 		<el-table-column label="商品名称" prop="name"></el-table-column>
 		<el-table-column label="ISBN编号" prop="isbn"></el-table-column>
-		<el-table-column label="描述" prop="descript"></el-table-column>
+		<el-table-column label="单价" prop="price"></el-table-column>
 	</el-table>
 	<br/>
-	<el-button v-if="admin==='true'" size="mini" type="primary" @click="handleAdd">Add</el-button>
+	<el-button style="float:right;" icon="el-icon-edit" v-if="admin==='true'" size="mini" type="primary" @click="handleAdd">Add</el-button>
+	<el-pagination style="margin:10px;width:70%"
+			@size-change="handleSizeChange"
+			@current-change="handleCurrentChange"
+			:current-page="currentPage"
+			:page-sizes="[5, 10, 15, 20]"
+			:page-size="pageSize"
+			layout="total, sizes, prev, pager, next, jumper"
+			:total="totalEntry">
+		</el-pagination>
 	</div>
 </template>
 
@@ -69,17 +78,46 @@ export default {
 			tableData: [],
 			editClicked: false,
 			search:'',
+			currentPage: 1,
+			pageSize: 5,
+			totalEntry: ''
 		};
 	},
 	methods: {
-		handleEdit: function(index, row){//以下两个函数处理时间极长，不知何故
+		heplerFunc(index){
+			var self = this;
+			var url = "/storages/"+this.pageSize;
+			this.postParamRequest(url,{
+				"index": index,
+			})
+			.then(response => {
+				self.tableData=response.data.result.data;
+				self.totalEntry = response.data.result.entries;
+				console.log(response.data);
+			})
+			.catch(error => {
+				JSON.stringify(error);
+				console.log(error);
+			});
+		},
+		handleSizeChange(val) {
+			this.pageSize = val;
+			var index = this.pageSize*(this.currentPage-1);
+			this.heplerFunc(index);
+		},
+		handleCurrentChange(val) {
+			this.currentPage = val;
+			var index = this.pageSize*(this.currentPage-1);
+			this.heplerFunc(index);
+		},
+		handleEdit(index, row){//以下两个函数处理时间极长，不知何故
+			console.log(row.editClicked);
 			row.editClicked = true;
 		},
 		handleCancel: function(index,row){
 			var self = this;
 			var url = "/storages/"+row.id;
-			this.axios
-			.getRequest(url)
+			this.getRequest(url)
 			.then(response => {
 				self.tableData[index]=response.data;
 				console.log(response.data);
@@ -91,7 +129,7 @@ export default {
 			row.editClicked = false;
 		},
 		handleSubmit: function(index,row){
-			if(row.name==null||row.descript==null||row.isbn==null||row.price==null||row.stores==null||row.subject)
+			if(row.name==null||row.descript==null||row.isbn==null||row.price==null||row.stores==null||row.subject==null)
 			{
 				this.$message({
 					type: 'danger',
@@ -99,15 +137,6 @@ export default {
 				});
 			}
 			else{
-				// var url = "http://localhost:8080/set/storages/"+row.id;
-				// var params = {
-				// 	"name":row.name,
-				// 	"descript":row.descript,
-				// 	"isbn":row.isbn,
-				// 	"price":row.price,
-				// 	"stores":row.stores,
-				// 	"subject":row.subject
-				// };
 				this.axios({
 					method: 'put',
 					url: "http://localhost:8080/set/storages/"+row.id,
@@ -172,7 +201,6 @@ export default {
 				url: "http://localhost:8080/add/storages/",
 			}).then(response => {
 				if(response.status==200){
-					console.log(response.data.id);
 					var newItem = {
 						"id": response.data.id,
 						"name": "书籍名称",
@@ -208,18 +236,7 @@ export default {
 		admin: String
 	},
 	mounted: function() {
-		var self = this;
-		var url = "/storages";
-		this.axios
-			.getRequest(url)
-			.then(response => {
-				self.tableData=response.data;
-				console.log(response.data);
-			})
-			.catch(error => {
-				JSON.stringify(error);
-				console.log(error);
-			});
+		this.handleCurrentChange(1);
 	}
 };
 </script>

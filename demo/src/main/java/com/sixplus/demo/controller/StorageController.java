@@ -1,14 +1,16 @@
 package com.sixplus.demo.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.sixplus.demo.bean.WebResponse;
 import com.sixplus.demo.entity.Storage;
 import com.sixplus.demo.repository.StorageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
-@CrossOrigin(origins = {"http://localhost:8081","null"},allowCredentials = "true",methods = {RequestMethod.GET, RequestMethod.PUT,RequestMethod.DELETE})
+@CrossOrigin(origins = {"http://localhost:8081","null"},allowCredentials = "true",methods = {RequestMethod.GET, RequestMethod.POST,RequestMethod.PUT,RequestMethod.DELETE})
 @RestController
 public class StorageController {
     @Autowired
@@ -17,6 +19,21 @@ public class StorageController {
     @GetMapping(value = "/storages")
     public List<Storage> getStorages(){
         return storageRepository.findAll();
+    }
+    @PostMapping(value = "/storages/{number}")
+    public WebResponse getSpecificStorage(@PathVariable(value = "number") Integer number,@RequestParam Integer index){
+        List<Storage> candidates = storageRepository.findAll();
+        List<Storage> specific = new ArrayList<>();
+        for (int i = index; i< index+number; i++){
+            if (candidates.size()>i){
+                specific.add(candidates.get(i));
+            }
+            else break;
+        }
+        JSONObject result = new JSONObject();
+        result.put("data",specific);
+        result.put("entries",candidates.size());
+        return WebResponse.success(result);
     }
 
     @GetMapping(value = "/storages/{id}")

@@ -1,88 +1,49 @@
 <template>
-  <div id="app">
-    <nav class="navbar navbar-default" role="navigation">
-        <div class="navbar-header">
-           <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"> <span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button> <a class="navbar-brand" href="#">e-bookstore</a>
-        </div>
-        
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-          <ul class="nav navbar-nav">
-            <li class="active">
-              <router-link to="/">主页</router-link>
-            </li>
-            <li>
-              <router-link to='/shop'>书库</router-link>
-            </li>
-            <li class="dropdown">
-               <a href="#" class="dropdown-toggle" data-toggle="dropdown">登录/注册<strong class="caret"></strong></a>
-              <ul class="dropdown-menu">
-                <li>
-                  <router-link to='/selfcenter'>个人中心</router-link>
-                </li>
-                <li>
-                   <router-link to='/login'>购物车</router-link>
-                </li>
-                <li>
-                  <router-link to='/login'>个人设置</router-link>
-                </li>
-                <li class="divider">
-                </li>
-                <li>
-                  <router-link to='/register'>注册新账号</router-link>
-                </li>
-                <li class="divider">
-                </li>
-                <li>
-                  <router-link @click.native="logout" to='/login' >注销</router-link>
-                </li>
-              </ul>
-            </li>
-          </ul>
-          <form class="navbar-form navbar-left" role="search">
-            <div class="form-group">
-              <input type="text" class="form-control" />
-            </div> 
-            <button type="submit" class="btn btn-default">查找</button>
-          </form>
-          <ul class="nav navbar-nav navbar-right">
-            <li>
-               <router-link to='/login'>购物车</router-link>
-            </li>
-            <li class="dropdown">
-               <a href="#" class="dropdown-toggle" data-toggle="dropdown">登录/注册<strong class="caret"></strong></a>
-              <ul class="dropdown-menu">
-                <li>
-                  <router-link to='/admin'>个人中心</router-link>
-                </li>
-                <li>
-                  <router-link to='/login'>个人设置</router-link>
-                </li>
-                <li>
-                  <router-link to='/register'>注册新账号</router-link>
-                </li>
-                <li class="divider">
-                </li>
-                <li>
-                  <router-link to='/login' @click.native="logout">注销</router-link>
-                </li>
-              </ul>
-            </li>
-          </ul>
-        </div>
-        
-      </nav>
+<el-container>
+  <el-header>
+    <el-menu router="true"
+  :default-active="$route.path"
+  class="el-menu-demo"
+  mode="horizontal"
+  @select="handleSelect"
+  background-color="#545c64"
+  text-color="#fff"
+  active-text-color="#ffd04b">
+  <el-menu-item index="/">首页</el-menu-item>
+  <el-menu-item index="/shop">书库</el-menu-item>
+  <el-submenu index="/login">
+    <template slot="title">登录/注册</template>
+    <el-menu-item index="/login">登录</el-menu-item>
+    <el-menu-item index="/register">注册</el-menu-item>
+  </el-submenu>
+  <el-menu-item index="active" @click="store">个人中心</el-menu-item>
+  <el-menu-item index="/" @click="logout" style="float:right;">退出</el-menu-item>
+</el-menu>
+  </el-header>
+  <el-main>
     <router-view/>
-  </div>
+  </el-main>
+  <el-footer>
+    <el-alert
+    title="@Copyright: sixplus"
+    type="info"
+    description="Contact: sixplus@sjtu.edu.cn"
+    >
+  </el-alert>
+  </el-footer>
+</el-container>
 </template>
 
-<style>
-@import "/lib/css/app.css";
-</style>
 
 <script>
 export default {
-  methods: {
-    logout: function(){
+  data() {
+      return {
+        active: false,
+      };
+    },
+    methods: {
+      logout: function(){
       if(this.$store.state.user!=null){
         this.axios({
           method: 'get',
@@ -95,7 +56,23 @@ export default {
         });        
         this.$store.commit('logout');
       }
+    },
+      store(){
+        this.active = this.$router.path;
+        if(this.$store.state.user==null){
+          this.$message({
+					  type: 'info',
+					  message: '请先登录'
+				  });
+          this.$router.push('/login');
+        }
+        else if(this.$store.state.user.role=="admin"){
+          this.$router.push('/admin');
+        }
+        else if(this.$store.state.user.role=="user"){
+          this.$router.push('/selfcenter');
+        }
+      }
     }
-  }
 }
 </script>

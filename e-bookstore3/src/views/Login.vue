@@ -48,6 +48,7 @@ export default {
     sign: function() {
       var username = this.$refs.username.value;
       var password = this.$refs.password.value;
+      console.log(username);
       alert('Username:'+username);
       this.postParamRequest('/login',{
         "username": username,
@@ -62,7 +63,7 @@ export default {
         if(response.data.result=="登录成功"){
           store = {"username":username,"role":"user"};
           this.$store.commit('login',store);
-          this.$router.push("/selfcenter");
+          this.$router.push("/selfcenter/newCart");
         }
         else if(response.data.code == '-1'){
           alert("您的账户已被管理员禁用，请联系管理员");
