@@ -27,13 +27,14 @@
 }
 
 .am-titlebar-default .am-titlebar-nav .my-title-l{
-	border: 1px solid #FFB852;
+	border: 1px solid  #669999;
 		border-width: 1px 0px 1px 1px;
 		text-transform: uppercase;
-		color: #FFB852;
+		color:  #669999;
 		margin-right: -4px;
 		padding: 0.6rem 1rem;
 		float: left;
+		width: 110px;
 }
 
 .am-titlebar-default .am-titlebar-nav .my-title-r{
@@ -44,10 +45,11 @@
 	padding: 0.6rem;
 	color: #fff;
 	float: left;
+	width: 65px;
 }
 .my-title-c{
-	background-color: rgb(219, 111, 39);
-	border: 1px solid rgb(219, 111, 39);
+	background-color: rgb(194, 192, 190);
+	border: 1px solid rgb(194, 192, 190);
 	text-align: left;
 	margin-right: 0;
 	padding: 0.6rem;
@@ -55,8 +57,11 @@
 	float: left;
 }
 .content{
-	font-size: 20px;
-	text-align: center;
+	height: 34.38px;
+	margin-left: 200px;
+	font-size: 15px;
+	padding: 0.6rem;
+	text-align: left;
 }
 .content-desc{
 	font-size: 15px;

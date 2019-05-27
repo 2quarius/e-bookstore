@@ -33,9 +33,11 @@
 								<p class="my-title-c">{{descript}}</p>
 							</nav>
 							<hr data-am-widget="divider" class="am-divider am-divider-default"/>
+							<div>
 							<el-input-number size="medium" v-model="num" @change="handleChange" :min="1" :max="stores" label="描述文字"></el-input-number>
-							<p class="money" v-bind="totalMoney">{{'¥'+totalMoney}}</p>
-							<el-button type="success" round @click="add2cart">加入购物车</el-button>
+							<p style="color:#c2a3ab" class="money" v-bind="totalMoney">{{'¥'+totalMoney}}</p>
+							<el-button style="background-color:#c2a3ab ;color:#5D5D5D;height:38px" @click="add2cart">加入购物车</el-button>
+							</div>
 						</div>
 					</div>
 				</div>

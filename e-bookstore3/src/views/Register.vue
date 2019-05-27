@@ -1,6 +1,6 @@
 <template>
-	<el-form :model="ruleForm" style="width:80%" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-	<el-form-item prop="email" label="邮箱">
+	<el-form label-position="top" :model="ruleForm" style="width:80%;padding:50px" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+	<el-form-item prop="email" label="邮箱" >
 	<el-input v-model="ruleForm.email"></el-input>
 	</el-form-item>
 	<el-form-item prop="username" label="用户名">
