@@ -11,40 +11,59 @@
 					</el-from-item>
 					<br>
 					<el-form-item label="商品名称">
-						<span v-if="!props.row.editClicked"
-							:class="{active:isActive}"
+						<span :class="{active:isActive}"
 							@mouseover="changeColor()"
 							@mouseleave="changeColor()"
 						>{{ props.row.name }}</span>
-						<el-input v-if="props.row.editClicked" v-model="props.row.name">{{props.row.name}}</el-input>
 					</el-form-item>
 					<el-form-item label="商品描述">
-						<span v-if="!props.row.editClicked">{{ props.row.descript }}</span>
-						<el-input type="textarea" autosize v-if="props.row.editClicked" v-model="props.row.descript">{{props.row.descript}}</el-input>
+						<span>{{ props.row.descript }}</span>
 					</el-form-item>
 					<el-form-item label="ISBN编号">
-						<span v-if="!props.row.editClicked">{{ props.row.isbn }}</span>
-						<el-input v-if="props.row.editClicked" v-model="props.row.isbn">{{props.row.isbn}}</el-input>
+						<span>{{ props.row.isbn }}</span>
 					</el-form-item>
 					<el-form-item label="库存量">
-						<span v-if="!props.row.editClicked">{{ props.row.stores }}</span>
-						<el-input v-if="props.row.editClicked" v-model="props.row.stores">{{props.row.stores}}</el-input>
+						<span>{{ props.row.stores }}</span>
 					</el-form-item>
 					<el-form-item label="单价">
-						<span v-if="!props.row.editClicked">{{ props.row.price }}</span>
-						<el-input v-if="props.row.editClicked" v-model="props.row.price">{{props.row.price}}</el-input>
+						<span>{{ props.row.price }}</span>
 					</el-form-item>
 					<el-form-item label="商品分类">
 						<span>{{ props.row.subject }}</span>
-						<el-input v-if="props.row.editClicked" v-model="props.row.subject">{{props.row.subject}}</el-input>
 					</el-form-item>
-					<template v-if="admin==='true'">
-						<el-button v-if="!props.row.editClicked" size="mini" @click="handleEdit(props.$index, props.row)">Edit</el-button>
-						<el-button v-if="props.row.editClicked" size="mini" @click="handleSubmit(props.$index, props.row)">Submit</el-button>
-						<el-button size="mini" type="danger" @click="handleDelete(props.$index, props.row)">Delete</el-button>
-						<el-button v-if="props.row.editClicked" size="mini" @click="handleCancel(props.$index, props.row)">Cancel</el-button>
-					</template>
 				</el-form>
+
+                <template v-if="admin==='true'">
+					<el-button size="mini" @click="dialogFormVisible = true;">Edit</el-button>
+					<el-button size="mini" type="danger" @click="handleDelete(props.$index, props.row)">Delete</el-button>
+				</template>
+
+                <el-dialog title="书籍信息" :visible.sync="dialogFormVisible">
+                    <el-form :inline="true">
+                        <el-form-item label="书籍名称" :label-width="formLabelWidth">
+                            <el-input v-model="props.row.name" autocomplete="off"></el-input>
+                        </el-form-item>
+                        <el-form-item label="ISBN编号" :label-width="formLabelWidth">
+                            <el-input v-model="props.row.isbn" :label-width="formLabelWidth"></el-input>
+                        </el-form-item>
+                        <el-form-item label="库存量" :label-width="formLabelWidth">
+                            <el-input v-model="props.row.stores" :label-width="formLabelWidth"></el-input>
+                        </el-form-item>
+                        <el-form-item label="单价" :label-width="formLabelWidth">
+                            <el-input v-model="props.row.price" :label-width="formLabelWidth"></el-input>
+                        </el-form-item>
+                        <el-form-item label="商品分类" :label-width="formLabelWidth">
+                            <el-input v-model="props.row.subject" :label-width="formLabelWidth"></el-input>
+                        </el-form-item>
+                        <el-form-item label="商品描述" :label-width="formLabelWidth">
+                            <el-input v-model="props.row.descript" :label-width="formLabelWidth"></el-input>
+                        </el-form-item>
+                    </el-form>
+                    <div slot="footer" class="dialog-footer">
+                        <el-button @click="dialogFormVisible = false;handleCancel;">取 消</el-button>
+                        <el-button type="primary" @click="dialogFormVisible = false;handleSubmit;">确 定</el-button>
+                    </div>
+                </el-dialog>
 			</template>
 		</el-table-column>
 		<el-table-column label="商品名称" prop="name"></el-table-column>
@@ -52,7 +71,7 @@
 		<el-table-column label="单价" prop="price"></el-table-column>
 	</el-table>
 	<br/>
-	<el-button style="float:right;" icon="el-icon-edit" v-if="admin==='true'" size="mini" type="primary" @click="handleAdd">Add</el-button>
+	<el-button style="float:right;" icon="el-icon-edit" v-if="admin==='true'" size="mini" type="primary" @click="dialogFormVisible = true;">Add</el-button>
 	<el-pagination style="margin:10px;width:70%"
 			@size-change="handleSizeChange"
 			@current-change="handleCurrentChange"
@@ -71,7 +90,7 @@
 
 <script>
 export default {
-	name: "Storage",
+	name: "newStorage",
 	data() {
 		return {
 			isActive: false,
@@ -109,10 +128,6 @@ export default {
 			this.currentPage = val;
 			var index = this.pageSize*(this.currentPage-1);
 			this.heplerFunc(index);
-		},
-		handleEdit(index, row){//以下两个函数处理时间极长，不知何故
-			console.log(row.editClicked);
-			row.editClicked = true;
 		},
 		handleCancel: function(index,row){
 			var self = this;
@@ -194,29 +209,6 @@ export default {
 					});          
 				});
 			}
-		},
-		handleAdd: function(){
-			this.axios({
-				method: 'put',
-				url: "http://localhost:8080/add/storages/",
-			}).then(response => {
-				if(response.status==200){
-					var newItem = {
-						"id": response.data.id,
-						"name": "书籍名称",
-						"isbn": "ISBN编号",
-						"descript": "商品描述"
-					}
-					this.tableData.push(newItem);
-					this.$message({
-						type: 'success',
-						message: '已新建商品列,快去编辑吧！'
-					});
-				}
-			}).catch(error => {
-				JSON.stringify(error);
-				console.log(error);
-			});
 		},
 		selectGood:function(argc){
 			this.$router.push({

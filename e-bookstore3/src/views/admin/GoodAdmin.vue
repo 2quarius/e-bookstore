@@ -1,13 +1,13 @@
 <template>
-    <Storage admin="true"></Storage>
+    <newStorage admin="true"></newStorage>
 </template>
 
 <script>
-import Storage from '@/components/Storage.vue'
+import newStorage from '@/components/newStorage.vue'
 export default {
     name: 'good-admin',
     components: {
-        Storage
+        newStorage
     }
 }
 </script>

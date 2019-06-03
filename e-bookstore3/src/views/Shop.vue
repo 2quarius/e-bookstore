@@ -1,5 +1,5 @@
 <template>
-  <Storage admin="false"></Storage>
+  <newStorage admin="false"></newStorage>
 </template>
 
 <style>
@@ -7,11 +7,11 @@
 </style>
 
 <script>
-import Storage from '@/components/Storage.vue'
+import newStorage from '@/components/newStorage.vue'
   export default {
     name: 'shop',
     components: {
-      Storage
+      newStorage
     }
   }
 </script>

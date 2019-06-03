@@ -21,18 +21,26 @@ spring:
       max-idle: 8
       min-idle: 0
       max-wait: 1
-management:
-  server:
-    servlet:
-      context-path: "/actuator"
-  endpoints:
-    web:
-      exposure:
-        include: "*"
-      base-path: "/management"
-  endpoint:
-    shutdown:
-      enabled: false
+  application:
+    name: service-bookstore
+  cloud:
+    consul:
+      host: localhost
+      port: 8500
+      discovery:
+        service-name: service-bookstore
+#management:
+#  server:
+#    servlet:
+#      context-path: "/actuator"
+#  endpoints:
+#    web:
+#      exposure:
+#        include: "*"
+#      base-path: "/management"
+#  endpoint:
+#    shutdown:
+#      enabled: false
 info:
   app:
     name: "ebook"
