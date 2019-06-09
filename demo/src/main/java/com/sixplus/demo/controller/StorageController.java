@@ -42,13 +42,17 @@ public class StorageController {
         return storageRepository.getOne(id);
     }
 
-    @PutMapping(value = "add/storages/")
-    public Storage editStorages()
+    @PostMapping(value = "add/storages/")
+    public Storage editStorages(@RequestBody JSONObject info)
     {
         Storage book = new Storage();
-        book.setName("书籍名称");
-        book.setISBN("ISBN编号");
-        book.setDescript("商品描述");
+        book.setUrl("good0.jpg");
+        book.setName(info.getString("name"));
+        book.setISBN(info.getString("isbn"));
+        book.setPrice(info.getDouble("price"));
+        book.setStores(info.getInteger("stores"));
+        book.setSubject(info.getString("subject"));
+        book.setDescript(info.getString("descript"));
         return storageRepository.save(book);
     }
 

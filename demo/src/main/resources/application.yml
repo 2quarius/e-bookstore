@@ -25,22 +25,22 @@ spring:
     name: service-bookstore
   cloud:
     consul:
-      host: localhost
-      port: 8500
+      host: 202.120.40.8
+      port: 30332
       discovery:
         service-name: service-bookstore
-#management:
-#  server:
-#    servlet:
-#      context-path: "/actuator"
-#  endpoints:
-#    web:
-#      exposure:
-#        include: "*"
-#      base-path: "/management"
-#  endpoint:
-#    shutdown:
-#      enabled: false
+management:
+  server:
+    servlet:
+      context-path: "/actuator"
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+      base-path: "/management"
+  endpoint:
+    shutdown:
+      enabled: false
 info:
   app:
     name: "ebook"
